@@ -12,11 +12,12 @@ def generate_gromet() -> Gromet:
         ModelDescription(uid=UidMetadatum('chime_model_description'),
                          provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
                                                timestamp=get_current_datetime()),
-                         name='CHIME v01f',
+                         name='CHIME SIR Base',
                          description='The CHIME model including the core SIR dynamics and '
                                      'pre-computation of simple policy affecting relative contact '
                                      'rate and its impact on infection rate (beta).')
 
+    # TODO: Regenerate ModelInterface
     chime_model_interface = \
         ModelInterface(uid=UidMetadatum("chime_model_interface"),
                        provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
@@ -44,6 +45,25 @@ def generate_gromet() -> Gromet:
     wires_main = [
 
         # main <body>
+
+        Wire(uid=UidWire("W:main_call_simsir.out.s_n>main.out.s_n"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_call_simsir.out.s_n"),
+             tgt=UidPort("B:main.out.s_n")),
+        Wire(uid=UidWire("W:main_call_simsir.out.i_n>main.out.i_n"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_call_simsir.out.i_n"),
+             tgt=UidPort("B:main.out.i_n")),
+        Wire(uid=UidWire("W:main_call_simsir.out.r_n>main.out.r_n"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_call_simsir.out.r_n"),
+             tgt=UidPort("B:main.out.r_n")),
 
         Wire(uid=UidWire("W:main.s_n>main_call_simsir.in.s_n"),
              type=None,
@@ -719,14 +739,6 @@ def generate_gromet() -> Gromet:
              name=None, value=None, metadata=None,
              src=UidPort("PC:simsir_loop_1_1_call_sir_exp.out.r"),
              tgt=UidPort("PC:simsir_loop_1_1.out.r")),
-
-        # todo: Rewire when updating simsir
-        # Wire(uid=UidWire("W:simsir_loop_1_1_call_sir_exp.out.s>simsir.out.s"),
-        #      type=None,
-        #      value_type=UidType("Float"),
-        #      name=None, value=None, metadata=None,
-        #      src=UidPort("PC:simsir_loop_1_1_call_sir_exp.out.s"),  # UidPort("P:sir.s_out"),
-        #      tgt=UidPort("P:simsir.out.s")),
     ]
 
     wires_sir = [
@@ -877,7 +889,28 @@ def generate_gromet() -> Gromet:
              src=UidPort("P:sir_r_exp.r"),
              tgt=UidPort("P:sir.r_out"))
     ]
+
     ports_main = [
+
+        # main out
+        Port(uid=UidPort("B:main.out.s_n"),
+             box=UidBox("B:main"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="s_n",
+             value=None, metadata=None),
+        Port(uid=UidPort("B:main.out.i_n"),
+             box=UidBox("B:main"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="i_n",
+             value=None, metadata=None),
+        Port(uid=UidPort("B:main.out.r_n"),
+             box=UidBox("B:main"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="r_n",
+             value=None, metadata=None),
 
         # main_gamma_exp in
         Port(uid=UidPort("P:main_gamma_exp.in.infections_days"),
@@ -1027,7 +1060,6 @@ def generate_gromet() -> Gromet:
                  value=None,
                  metadata=None),
     ]
-
 
     ports_main_loop_1 = [
 
@@ -1286,8 +1318,6 @@ def generate_gromet() -> Gromet:
              name="policys_betas",
              value=None, metadata=None),
 
-
-        # TODO Complete
         # main_loop_1_pdays_exp in
         Port(uid=UidPort("P:main_loop_1_pdays_exp.in.policy_days"),
              box=UidBox("B:main_loop_1_pdays_exp"),
@@ -3417,7 +3447,11 @@ def generate_gromet() -> Gromet:
         Function(uid=UidBox("B:main"),
                  type=None,
                  name=UidOp("main"),
-                 ports=[],
+                 ports=[
+                     UidPort("B:main.out.s_n"),
+                     UidPort("B:main.out.i_n"),
+                     UidPort("B:main.out.r_n")
+                 ],
 
                  # contents
                  junctions=[
@@ -3450,6 +3484,9 @@ def generate_gromet() -> Gromet:
                      UidWire("W:main.p_idx>main_loop_1.in.p_idx"),
                      UidWire("W:main.infections_days>main_gamma_exp.in.infections_days"),
 
+                     UidWire("W:main_call_simsir.out.s_n>main.out.s_n"),
+                     UidWire("W:main_call_simsir.out.i_n>main.out.i_n"),
+                     UidWire("W:main_call_simsir.out.r_n>main.out.r_n")
                  ],
                  boxes=[
                      UidBox("B:main_gamma_exp"),
@@ -3498,10 +3535,10 @@ def generate_gromet() -> Gromet:
     variables = variables_sir
 
     _g = Gromet(
-        uid=UidGromet("CHIME_SIR_01f"),
-        name="CHIME_SIR_01f",
+        uid=UidGromet("CHIME_SIR_Base"),
+        name="CHIME_SIR_Base",
         type=UidType("FunctionNetwork"),
-        root=UidBox("B:main"),  # TODO Update with latest root
+        root=UidBox("B:main"),
         types=None,
         literals=None,
         junctions=junctions,
