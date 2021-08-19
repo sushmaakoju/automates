@@ -1155,6 +1155,49 @@ def generate_gromet() -> Gromet:
                  value=None,
                  metadata=None),
 
+        # main_loop_1_call_get_beta_exp in
+        PortCall(uid=UidPort("PC:main_loop_1_call_get_beta_exp.in.growth_rate"),
+                 call=UidPort("P:get_beta.in.intrinsic_growth_rate"),
+                 box=UidBox("B:main_loop_1_call_get_beta_exp"),
+                 type=UidType("PortInput"),
+                 value_type=UidType("Float"),
+                 name="growth_rate",
+                 value=None,
+                 metadata=None),
+        PortCall(uid=UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma"),
+                 call=UidPort("P:get_beta.in.gamma"),
+                 box=UidBox("B:main_loop_1_call_get_beta_exp"),
+                 type=UidType("PortInput"),
+                 value_type=UidType("Float"),
+                 name="gamma",
+                 value=None,
+                 metadata=None),
+        PortCall(uid=UidPort("PC:main_loop_1_call_get_beta_exp.in.s_n"),
+                 call=UidPort("P:get_beta.in.susceptible"),
+                 box=UidBox("B:main_loop_1_call_get_beta_exp"),
+                 type=UidType("PortInput"),
+                 value_type=UidType("Float"),
+                 name="s_n",
+                 value=None,
+                 metadata=None),
+        PortCall(uid=UidPort("PC:main_loop_1_call_get_beta_exp.in.relative_contact_rate"),
+                 call=UidPort("P:get_beta.in.relative_contact_rate"),
+                 box=UidBox("B:main_loop_1_call_get_beta_exp"),
+                 type=UidType("PortInput"),
+                 value_type=UidType("Float"),
+                 name="relative_contact_rate",
+                 value=None,
+                 metadata=None),
+        # main_loop_1_call_get_beta_exp out
+        PortCall(uid=UidPort("PC:main_loop_1_call_get_beta_exp.out.beta"),
+                 call=UidPort("P:get_beta.out.beta"),
+                 box=UidBox("B:main_loop_1_call_get_beta_exp"),
+                 type=UidType("PortOutput"),
+                 value_type=UidType("Float"),
+                 name="beta",
+                 value=None,
+                 metadata=None),
+
         # -- called functions
 
         # get_growth_rate in
@@ -2183,7 +2226,7 @@ def generate_gromet() -> Gromet:
 
     junctions_main = [
         Junction(uid=UidJunction("J:main.s_n"),
-                 name='<main-J>s_n',  # TODO debug
+                 name='s_n',
                  type=None,
                  value=Literal(uid=None,
                                type=UidType('Integer'),
@@ -3133,6 +3176,22 @@ def generate_gromet() -> Gromet:
                  ],
 
                  metadata=None)
+
+    # main_loop_1_call_get_beta_exp
+    main_loop_1_call_get_beta_exp = \
+        BoxCall(uid=UidBox("B:main_loop_1_call_get_beta_exp"),
+                type=None,
+                name=None,
+                call=UidBox("B:get_beta"),
+                ports=[
+                    UidPort("PC:main_loop_1_call_get_beta_exp.in.growth_rate"),
+                    UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma"),
+                    UidPort("PC:main_loop_1_call_get_beta_exp.in.s_n"),
+                    UidPort("PC:main_loop_1_call_get_beta_exp.in.relative_contact_rate"),
+                    UidPort("PC:main_loop_1_call_get_beta_exp.out.beta")
+                ],
+                metadata=None)
+
     main_loop_1 = \
         Loop(uid=UidBox("B:main_loop_1"),
              type=None,
@@ -3180,10 +3239,7 @@ def generate_gromet() -> Gromet:
                  # body
                  UidBox("B:main_loop_1_dtime_exp"),
                  UidBox("B:main_loop_1_call_growth_rate_exp"),
-
-                 UidBox("B:get_beta"), # TODO !!! TEMPORARY !!! remove once call_get_beta is in
-
-                 # todo main_loop_1_call_get_beta
+                 UidBox("B:main_loop_1_call_get_beta_exp"),
                  # todo main_loop_1_pbetas_exp
                  # todo main_loop_1_pdays_exp
              ],
@@ -3249,11 +3305,11 @@ def generate_gromet() -> Gromet:
              main_gamma_exp, main_pbetas_seq, main_pdays_seq,
              main_loop_1, main_loop_1_cond, main_loop_1_p_idx_exp,
              main_loop_1_dtime_exp, main_loop_1_call_growth_rate_exp,
+             main_loop_1_call_get_beta_exp,
              main_call_simsir,
 
              get_growth_rate,
-             get_beta,
-             get_beta_updated_growth_rate_expr, get_beta_inv_contact_rate_exp, get_beta_betas_exp,
+             get_beta, get_beta_updated_growth_rate_expr, get_beta_inv_contact_rate_exp, get_beta_betas_exp,
 
              simsir,
              simsir_n_exp,
