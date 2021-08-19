@@ -911,6 +911,33 @@ def generate_gromet() -> Gromet:
              value_type=UidType("Sequence"),
              name="R",
              value=None, metadata=None),
+        Port(uid=UidPort("P:main.out.E"),
+             box=UidBox("B:main"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Sequence"),
+             name="E",
+             value=None, metadata=None),
+
+        # main_ever_infected_exp in
+        Port(uid=UidPort("P:main_ever_infected_exp.in.i"),
+             box=UidBox("B:main_ever_infected_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:main_ever_infected_exp.in.r"),
+             box=UidBox("B:main_ever_infected_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="r",
+             value=None, metadata=None),
+        # main_ever_infected_exp out
+        Port(uid=UidPort("P:main_ever_infected_exp.out.E"),
+             box=UidBox("B:main_ever_infected_exp"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Sequence"),
+             name="E",
+             value=None, metadata=None),
 
         # main_gamma_exp in
         Port(uid=UidPort("P:main_gamma_exp.in.infections_days"),
@@ -3443,6 +3470,21 @@ def generate_gromet() -> Gromet:
 
              metadata=None)
 
+    # main_ever_infected_exp
+    main_ever_infected_exp_e0 = \
+        Expr(call=RefOp(UidOp('+')),
+             args=[UidPort("P:main_ever_infected_exp.in.i"),
+                   UidPort("P:main_ever_infected_exp.in.r")])
+    main_ever_infected_exp = \
+        Expression(uid=UidBox("B:main_ever_infected_exp"),
+                   type=None,
+                   name=None,
+                   ports=[UidPort("P:main_ever_infected_exp.in.i"),
+                          UidPort("P:main_ever_infected_exp.in.r"),
+                          UidPort("P:main_ever_infected_exp.out.E")],
+                   tree=main_ever_infected_exp_e0,
+                   metadata=None)
+
     main = \
         Function(uid=UidBox("B:main"),
                  type=None,
@@ -3450,7 +3492,8 @@ def generate_gromet() -> Gromet:
                  ports=[
                      UidPort("P:main.out.S"),
                      UidPort("P:main.out.I"),
-                     UidPort("P:main.out.R")
+                     UidPort("P:main.out.R"),
+                     UidPort("P:main.out.E")
                  ],
 
                  # contents
@@ -3493,7 +3536,8 @@ def generate_gromet() -> Gromet:
                      UidBox("B:main_pbetas_seq"),
                      UidBox("B:main_pdays_seq"),
                      UidBox("B:main_loop_1"),
-                     UidBox("B:main_call_simsir")
+                     UidBox("B:main_call_simsir"),
+                     UidBox("B:main_ever_infected_exp")
                  ],
 
                  metadata=None)
@@ -3510,6 +3554,7 @@ def generate_gromet() -> Gromet:
              main_loop_1_dtime_exp, main_loop_1_call_growth_rate_exp,
              main_loop_1_call_get_beta_exp, main_loop_1_pbetas_exp, main_loop_1_pdays_exp,
              main_call_simsir,
+             main_ever_infected_exp,
 
              get_growth_rate,
              get_beta, get_beta_updated_growth_rate_expr, get_beta_inv_contact_rate_exp, get_beta_betas_exp,
