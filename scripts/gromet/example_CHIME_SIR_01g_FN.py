@@ -46,24 +46,24 @@ def generate_gromet() -> Gromet:
 
         # main <body>
 
-        Wire(uid=UidWire("W:main_call_simsir.out.s_n>main.out.s_n"),
+        Wire(uid=UidWire("W:main_call_simsir.out.s_n>main.out.S"),
              type=None,
-             value_type=UidType("Float"),
+             value_type=UidType("Sequence"),
              name=None, value=None, metadata=None,
              src=UidPort("PC:main_call_simsir.out.s_n"),
-             tgt=UidPort("B:main.out.s_n")),
-        Wire(uid=UidWire("W:main_call_simsir.out.i_n>main.out.i_n"),
+             tgt=UidPort("P:main.out.S")),
+        Wire(uid=UidWire("W:main_call_simsir.out.i_n>main.out.I"),
              type=None,
-             value_type=UidType("Float"),
+             value_type=UidType("Sequence"),
              name=None, value=None, metadata=None,
              src=UidPort("PC:main_call_simsir.out.i_n"),
-             tgt=UidPort("B:main.out.i_n")),
-        Wire(uid=UidWire("W:main_call_simsir.out.r_n>main.out.r_n"),
+             tgt=UidPort("P:main.out.I")),
+        Wire(uid=UidWire("W:main_call_simsir.out.r_n>main.out.R"),
              type=None,
-             value_type=UidType("Float"),
+             value_type=UidType("Sequence"),
              name=None, value=None, metadata=None,
              src=UidPort("PC:main_call_simsir.out.r_n"),
-             tgt=UidPort("B:main.out.r_n")),
+             tgt=UidPort("P:main.out.R")),
 
         Wire(uid=UidWire("W:main.s_n>main_call_simsir.in.s_n"),
              type=None,
@@ -893,23 +893,23 @@ def generate_gromet() -> Gromet:
     ports_main = [
 
         # main out
-        Port(uid=UidPort("B:main.out.s_n"),
+        Port(uid=UidPort("P:main.out.S"),
              box=UidBox("B:main"),
              type=UidType("PortOutput"),
-             value_type=UidType("Float"),
-             name="s_n",
+             value_type=UidType("Sequence"),
+             name="S",
              value=None, metadata=None),
-        Port(uid=UidPort("B:main.out.i_n"),
+        Port(uid=UidPort("P:main.out.I"),
              box=UidBox("B:main"),
              type=UidType("PortOutput"),
-             value_type=UidType("Float"),
-             name="i_n",
+             value_type=UidType("Sequence"),
+             name="I",
              value=None, metadata=None),
-        Port(uid=UidPort("B:main.out.r_n"),
+        Port(uid=UidPort("P:main.out.R"),
              box=UidBox("B:main"),
              type=UidType("PortOutput"),
-             value_type=UidType("Float"),
-             name="r_n",
+             value_type=UidType("Sequence"),
+             name="R",
              value=None, metadata=None),
 
         # main_gamma_exp in
@@ -3448,9 +3448,9 @@ def generate_gromet() -> Gromet:
                  type=None,
                  name=UidOp("main - v01g"),    # TODO UPDATE
                  ports=[
-                     UidPort("B:main.out.s_n"),
-                     UidPort("B:main.out.i_n"),
-                     UidPort("B:main.out.r_n")
+                     UidPort("P:main.out.S"),
+                     UidPort("P:main.out.I"),
+                     UidPort("P:main.out.R")
                  ],
 
                  # contents
@@ -3484,9 +3484,9 @@ def generate_gromet() -> Gromet:
                      UidWire("W:main.p_idx>main_loop_1.in.p_idx"),
                      UidWire("W:main.infections_days>main_gamma_exp.in.infections_days"),
 
-                     UidWire("W:main_call_simsir.out.s_n>main.out.s_n"),
-                     UidWire("W:main_call_simsir.out.i_n>main.out.i_n"),
-                     UidWire("W:main_call_simsir.out.r_n>main.out.r_n")
+                     UidWire("W:main_call_simsir.out.s_n>main.out.S"),
+                     UidWire("W:main_call_simsir.out.i_n>main.out.I"),
+                     UidWire("W:main_call_simsir.out.r_n>main.out.R")
                  ],
                  boxes=[
                      UidBox("B:main_gamma_exp"),
