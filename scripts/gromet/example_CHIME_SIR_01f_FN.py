@@ -70,10 +70,6 @@ def generate_gromet() -> Gromet:
              src=UidJunction("J:main.r_n"),
              tgt=UidPort("PC:main_call_simsir.in.r_n")),
 
-        # TODO Wire
-        # UidPort("PC:main_loop_1.out.policys_betas")  # todo create
-        # UidPort("PC:main_call_simsir.in.betas")
-
         Wire(uid=UidWire("W:main.infections_days>main_gamma_exp.in.infections_days"),
              type=None,
              value_type=UidType("Integer"),
@@ -155,14 +151,6 @@ def generate_gromet() -> Gromet:
              src=UidPort("J:main.N_p"),
              tgt=UidPort("P:main_loop_1.in.N_p")),
 
-        # TODO Wire
-        # UidPort("P:main_pbetas_seq.out.policys_betas"),
-        # UidPort("P:main_loop_1.in.policys_betas")  # todo create
-
-        # TODO Wire
-        # UidPort("P:main_pdays_seq.out.policy_days")
-        # UidPort("P:main_loop_1.in.policy_days")  # todo create
-
         Wire(uid=UidWire("W:main_pdays_seq.out.policy_days>main_call_simsir.in.days"),
              type=None,
              value_type=UidType("Integer"),
@@ -205,13 +193,40 @@ def generate_gromet() -> Gromet:
              name=None, value=None, metadata=None,
              src=UidPort("P:main_loop_1.in.p_idx"),
              tgt=UidPort("P:main_loop_1_dtime_exp.in.p_idx")),
-
         Wire(uid=UidWire("W:main_loop_1_dtime_exp.out.doubling_time>main_loop_1_call_growth_rate_exp.in.doubling_time"),
              type=None,
              value_type=UidType("Integer"),
              name=None, value=None, metadata=None,
              src=UidPort("P:main_loop_1_dtime_exp.out.doubling_time"),
              tgt=UidPort("PC:main_loop_1_call_growth_rate_exp.in.doubling_time")),
+        Wire(uid=UidWire("W:main_loop_1_call_growth_rate_exp.out.growth_rate>main_loop_1_call_get_beta_exp.in.growth_rate"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_loop_1_call_growth_rate_exp.out.growth_rate"),
+             tgt=UidPort("PC:main_loop_1_call_get_beta_exp.in.growth_rate")),
+        Wire(uid=UidWire("W:main_loop_1.in.gamma>main_loop_1_call_get_beta_exp.in.gamma"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_loop_1.in.gamma"),
+             tgt=UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma")),
+        Wire(uid=UidWire("W:main_loop_1.in.s_n>main_loop_1_call_get_beta_exp.in.s_n"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_loop_1.in.s_n"),
+             tgt=UidPort("PC:main_loop_1_call_get_beta_exp.in.s_n")),
+        Wire(uid=UidWire("W:main_loop_1.in.relative_contact_rate>main_loop_1_call_get_beta_exp.in.relative_contact_rate"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_loop_1.in.relative_contact_rate"),
+             tgt=UidPort("PC:main_loop_1_call_get_beta_exp.in.relative_contact_rate")),
+
+        # Wire
+        # UidPort("PC:main_loop_1_call_get_beta_exp.out.beta"),
+        #
 
         # -- called functions
 
@@ -3231,7 +3246,10 @@ def generate_gromet() -> Gromet:
                  # main_loop_1 body
                  UidWire("W:main_loop_1.in.p_idx>main_loop_1_dtime_exp.in.p_idx"),
                  UidWire("W:main_loop_1_dtime_exp.out.doubling_time>main_loop_1_call_growth_rate_exp.in.doubling_time"),
-
+                 UidWire("W:main_loop_1_call_growth_rate_exp.out.growth_rate>main_loop_1_call_get_beta_exp.in.growth_rate"),
+                 UidWire("W:main_loop_1.in.gamma>main_loop_1_call_get_beta_exp.in.gamma"),
+                 UidWire("W:main_loop_1.in.s_n>main_loop_1_call_get_beta_exp.in.s_n"),
+                 UidWire("W:main_loop_1.in.relative_contact_rate>main_loop_1_call_get_beta_exp.in.relative_contact_rate"),
              ],
              boxes=[
                  # control
