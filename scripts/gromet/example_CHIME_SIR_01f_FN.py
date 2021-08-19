@@ -224,9 +224,48 @@ def generate_gromet() -> Gromet:
              src=UidPort("P:main_loop_1.in.relative_contact_rate"),
              tgt=UidPort("PC:main_loop_1_call_get_beta_exp.in.relative_contact_rate")),
 
+        Wire(uid=UidWire("W:main_loop_1.in.policys_betas>main_loop_1_pbetas_exp.in.policys_betas"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_loop_1.in.policys_betas"),
+             tgt=UidPort("P:main_loop_1_pbetas_exp.in.policys_betas")),
+        Wire(uid=UidWire("W:main_loop_1.in.p_idx>main_loop_1_pbetas_exp.in.p_idx"),
+             type=None,
+             value_type=UidType("Integer"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_loop_1.in.p_idx"),
+             tgt=UidPort("P:main_loop_1_pbetas_exp.in.p_idx")),
+        Wire(uid=UidWire("W:main_loop_1_call_get_beta_exp.out.beta>main_loop_1_pbetas_exp.in.beta"),
+             type=None,
+             value_type=UidType("Integer"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_loop_1_call_get_beta_exp.out.beta"),
+             tgt=UidPort("P:main_loop_1_pbetas_exp.in.beta")),
+        Wire(uid=UidWire("W:main_loop_1_pbetas_exp.out.policys_betas>main_loop_1.out.policys_betas"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_loop_1_pbetas_exp.out.policys_betas"),
+             tgt=UidPort("PC:main_loop_1.out.policys_betas")),
+
+        # TODO Complete
+
         # Wire
-        # UidPort("PC:main_loop_1_call_get_beta_exp.out.beta"),
-        #
+        # UidPort("P:main_loop_1.in.policy_days"),
+        # UidPort("P:main_loop_1_pdays_exp.in.policy_days"),
+
+        # Wire
+        # UidPort("P:main_loop_1.in.p_idx"),
+        # UidPort("P:main_loop_1_pdays_exp.in.p_idx"),
+
+        # Wire
+        # UidPort("P:main_loop_1.in.n_days"),
+        # UidPort("P:main_loop_1_pdays_exp.in.n_days"),
+
+        # Wire
+        # UidPort("P:main_loop_1_pdays_exp.out.policy_days")
+        # UidPort("PC:main_loop_1.out.policy_days"),
 
         # -- called functions
 
@@ -1212,6 +1251,42 @@ def generate_gromet() -> Gromet:
                  name="beta",
                  value=None,
                  metadata=None),
+
+        # main_loop_1_pbetas_exp in
+        Port(uid=UidPort("P:main_loop_1_pbetas_exp.in.policys_betas"),
+             box=UidBox("B:main_loop_1_pbetas_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Sequence"),
+             name="policys_betas",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:main_loop_1_pbetas_exp.in.p_idx"),
+             box=UidBox("B:main_loop_1_pbetas_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="p_idx",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:main_loop_1_pbetas_exp.in.beta"),
+             box=UidBox("B:main_loop_1_pbetas_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="beta",
+             value=None, metadata=None),
+        # main_loop_1_pbetas_exp out
+        Port(uid=UidPort("P:main_loop_1_pbetas_exp.out.policys_betas"),
+             box=UidBox("B:main_loop_1_pbetas_exp"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Sequence"),
+             name="policys_betas",
+             value=None, metadata=None),
+
+
+        # TODO Complete
+        # main_loop_1_pdays_exp in
+        UidPort("P:main_loop_1_pdays_exp.in.policy_days"),
+        UidPort("P:main_loop_1_pdays_exp.in.p_idx"),
+        UidPort("P:main_loop_1_pdays_exp.in.n_days"),
+        # main_loop_1_pdays_exp out
+        UidPort("P:main_loop_1_pdays_exp.out.policy_days")
 
         # -- called functions
 
@@ -3207,6 +3282,44 @@ def generate_gromet() -> Gromet:
                 ],
                 metadata=None)
 
+    # main_loop_1_pbetas_exp
+    main_loop_1_pbetas_exp_e0 = \
+        Expr(call=RefOp(UidOp('set')),
+             args=[UidPort("P:main_loop_1_pbetas_exp.in.policys_betas"),
+                   UidPort("P:main_loop_1_pbetas_exp.in.p_idx"),
+                   UidPort("P:main_loop_1_pbetas_exp.in.beta")])
+    main_loop_1_pbetas_exp = \
+        Expression(uid=UidBox("B:main_loop_1_pbetas_exp"),
+                   type=None,
+                   name=None,
+                   ports=[UidPort("P:main_loop_1_pbetas_exp.in.policys_betas"),
+                          UidPort("P:main_loop_1_pbetas_exp.in.p_idx"),
+                          UidPort("P:main_loop_1_pbetas_exp.in.beta"),
+                          UidPort("P:main_loop_1_pbetas_exp.out.policys_betas")],
+                   tree=main_loop_1_pbetas_exp_e0,
+                   metadata=None)
+
+    # main_loop_1_pdays_exp
+    main_loop_1_pdays_exp_e0 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[UidPort("P:main_loop_1_pdays_exp.in.p_idx"),
+                   UidPort("P:main_loop_1_pdays_exp.in.n_days")])
+    main_loop_1_pdays_exp_e1 = \
+        Expr(call=RefOp(UidOp('set')),
+             args=[UidPort("P:main_loop_1_pdays_exp.in.policy_days"),
+                   UidPort("P:main_loop_1_pdays_exp.in.p_idx"),
+                   main_loop_1_pdays_exp_e0])
+    main_loop_1_pdays_exp = \
+        Expression(uid=UidBox("B:main_loop_1_pdays_exp"),
+                   type=None,
+                   name=None,
+                   ports=[UidPort("P:main_loop_1_pdays_exp.in.policy_days"),
+                          UidPort("P:main_loop_1_pdays_exp.in.p_idx"),
+                          UidPort("P:main_loop_1_pdays_exp.in.n_days"),
+                          UidPort("P:main_loop_1_pdays_exp.out.policy_days")],
+                   tree=main_loop_1_pdays_exp_e1,
+                   metadata=None)
+
     main_loop_1 = \
         Loop(uid=UidBox("B:main_loop_1"),
              type=None,
@@ -3250,6 +3363,10 @@ def generate_gromet() -> Gromet:
                  UidWire("W:main_loop_1.in.gamma>main_loop_1_call_get_beta_exp.in.gamma"),
                  UidWire("W:main_loop_1.in.s_n>main_loop_1_call_get_beta_exp.in.s_n"),
                  UidWire("W:main_loop_1.in.relative_contact_rate>main_loop_1_call_get_beta_exp.in.relative_contact_rate"),
+                 UidWire("W:main_loop_1.in.policys_betas>main_loop_1_pbetas_exp.in.policys_betas"),
+                 UidWire("W:main_loop_1.in.p_idx>main_loop_1_pbetas_exp.in.p_idx"),
+                 UidWire("W:main_loop_1_call_get_beta_exp.out.beta>main_loop_1_pbetas_exp.in.beta"),
+                 UidWire("W:main_loop_1_pbetas_exp.out.policys_betas>main_loop_1.out.policys_betas")
              ],
              boxes=[
                  # control
@@ -3258,12 +3375,11 @@ def generate_gromet() -> Gromet:
                  UidBox("B:main_loop_1_dtime_exp"),
                  UidBox("B:main_loop_1_call_growth_rate_exp"),
                  UidBox("B:main_loop_1_call_get_beta_exp"),
-                 # todo main_loop_1_pbetas_exp
-                 # todo main_loop_1_pdays_exp
+                 UidBox("B:main_loop_1_pbetas_exp"),
+                 UidBox("B:main_loop_1_pdays_exp")
              ],
 
              metadata=None)
-
 
     main = \
         Function(uid=UidBox("B:main"),
@@ -3323,7 +3439,7 @@ def generate_gromet() -> Gromet:
              main_gamma_exp, main_pbetas_seq, main_pdays_seq,
              main_loop_1, main_loop_1_cond, main_loop_1_p_idx_exp,
              main_loop_1_dtime_exp, main_loop_1_call_growth_rate_exp,
-             main_loop_1_call_get_beta_exp,
+             main_loop_1_call_get_beta_exp, main_loop_1_pbetas_exp, main_loop_1_pdays_exp
              main_call_simsir,
 
              get_growth_rate,
