@@ -65,6 +65,26 @@ def generate_gromet() -> Gromet:
              src=UidPort("PC:main_call_simsir.out.r_n"),
              tgt=UidPort("P:main.out.R")),
 
+        Wire(uid=UidWire("W:simsir.out.i>main_ever_infected_exp.in.i"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.out.i"),
+             tgt=UidPort("P:main_ever_infected_exp.in.i")),
+        Wire(uid=UidWire("W:simsir.out.r>main_ever_infected_exp.in.r"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.out.r"),
+             tgt=UidPort("P:main_ever_infected_exp.in.r")),
+
+        Wire(uid=UidWire("W:main_ever_infected_exp.out.E>main.out.E"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_ever_infected_exp.out.E"),
+             tgt=UidPort("P:main.out.E")),
+
         Wire(uid=UidWire("W:main.s_n>main_call_simsir.in.s_n"),
              type=None,
              value_type=UidType("Integer"),
@@ -3526,6 +3546,10 @@ def generate_gromet() -> Gromet:
                      UidWire("W:main.N_p>main_loop_1.in.N_p"),
                      UidWire("W:main.p_idx>main_loop_1.in.p_idx"),
                      UidWire("W:main.infections_days>main_gamma_exp.in.infections_days"),
+
+                     # UidWire("W:simsir.out.i>main_ever_infected_exp.in.i"),
+                     # UidWire("W:simsir.out.r>main_ever_infected_exp.in.r"),
+                     UidWire("W:main_ever_infected_exp.out.E>main.out.E"),
 
                      UidWire("W:main_call_simsir.out.s_n>main.out.S"),
                      UidWire("W:main_call_simsir.out.i_n>main.out.I"),
