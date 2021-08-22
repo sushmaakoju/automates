@@ -19,10 +19,10 @@ from csv import DictWriter, QUOTE_NONNUMERIC
 # -------------------------------------------------------------------------------
 #     Input Variables:
 #     intrinsic_growth_rate   Rate of spread of COVID-19 cases
-#     gamma                   The expected recovery rate from COVID-19 for infected individuals
-#     susceptible             Current amount of individuals that are susceptible
-#     relative_contact_rate   The relative contact rate amongst individuals in the population
-#
+#     gamma         The expected recovery rate from COVID-19 for infected individuals
+#     s_c           Current amount of individuals that are susceptible
+#     contact_rate  The relative contact rate amongst individuals in the population
+#     
 #
 #     State Variables:
 #     inv_contact_rate      The inverse rate of contact between individuals in the population
@@ -49,6 +49,33 @@ def get_beta(intrinsic_growth_rate, gamma, susceptible, relative_contact_rate):
     beta = updated_growth_rate / susceptible * inv_contact_rate  ## get_beta_beta_exp
 
     return beta
+
+
+# ===============================================================================
+# get_vaccination_rate
+# Calculates a rate of vaccination from the number of people who have been vaccinated, 
+# the total population, and the vaccine hesitancy
+# -------------------------------------------------------------------------------
+#     Input Variables:
+#     v_e   Number of people ever vaccinated
+#     n     Total population
+#     max_vaccination_rate    The maximum number of people vaccinated per day
+#     vaccination_hesitancy   Proportion of population that is vaccine hesistant
+#
+#     State Variables:
+#     non_vaccine_hesistant      Proportion of population willing to get vaccinated
+#
+#     Output Variables:
+#     vaccination_rate    The updated vaccination rate
+#
+# -------------------------------------------------------------------------------
+#  Called by:   main, sim_sir
+#  Calls:       None
+# ==============================================================================
+def get_vaccination_rate(v_e, n, max_vaccination_rate, vaccine_hesitancy):
+    non_vaccine_hesistant = n * (1 - vaccine_hesitancy)
+    vaccination_rate = max_vaccination_rate * (1 - (v_e / non_vaccine_hesistant))
+    return vaccination_rate
 
 
 # ===============================================================================
@@ -90,9 +117,9 @@ def get_growth_rate(doubling_time):
 #     i           Current amount of individuals that are infectious
 #     i_v         Current amount of vaccinated individuals that are infectious
 #     r           Current amount of individuals that are recovered
+#     v_e         Number of individuals that have ever been vaccinated
 #     beta        The rate of exposure of individuals to persons infected with COVID-19
-#     gamma_unvaccinated     Rate of recovery for infected unvaccinated individuals
-#     gamma_vaccinated       Rate of recovery for infected vaccinated individuals
+#     gamma       Rate of recovery for infected individuals
 #     vaccination_rate       The rate of vaccination of susceptible individuals
 #     vaccine_efficacy       The efficacy of the vaccine
 #     n           Total population size
@@ -109,7 +136,7 @@ def get_growth_rate(doubling_time):
 #  Called by:   sim_sir
 #  Calls:        None
 # ==============================================================================
-def sir(s, v, i, i_v, r, vaccination_rate, beta, gamma_unvaccinated, gamma_vaccinated, vaccine_efficacy, n):
+def sir(s, v, i, i_v, r, v_e, vaccination_rate, beta, gamma, vaccine_efficacy, n):
     """
     The SIR model, one time step
     :param s: Current amount of individuals that are susceptible
@@ -118,18 +145,22 @@ def sir(s, v, i, i_v, r, vaccination_rate, beta, gamma_unvaccinated, gamma_vacci
     :param i_v: Current amount of vaccinated individuals that are infectious
     :param r: Current amount of individuals that are recovered
     :param beta: The rate of exposure of individuals to persons infected with COVID-19
-    :param gamma_unvaccinated: Rate of recovery for infected unvaccinated individuals
-    :param gamma_vaccinated: Rate of recovery for infected vaccinated individuals
+    :param gamma: Rate of recovery for infected individuals
     :param vaccination_rate: The rate of vaccination of susceptible individuals
     :param vaccine_efficacy: The efficacy of the vaccine
     :param n: Total population size
     :return:
     """
-    s_n = ( -beta * s * i - beta * s * i_v - vaccination_rate * s) + s  # Update to the amount of individuals that are susceptible ## sir_s_n_exp
-    v_n = (vaccination_rate * s - beta * (1 - vaccine_efficacy) * v * i - beta * ( 1 - vaccine_efficacy) * v * i_v) + v  # Update to the amount of individuals that are susceptible ## sir_v_n_exp
-    i_n = ( beta * s * i + beta * s * i_v - gamma_unvaccinated * i) + i  # Update to the amount of individuals that are infectious ## sir_i_n_exp
-    i_v_n = (beta * (1 - vaccine_efficacy) * v * i + beta * ( 1 - vaccine_efficacy) * v * i_v - gamma_vaccinated * i_v) + i_v  # Update to the amount of individuals that are infectious ## sir_i_v_n_exp
-    r_n = gamma_vaccinated * i_v + gamma_unvaccinated * i + r  # Update to the amount of individuals that are recovered ## sir_r_n_exp
+    s_n = (
+                      -beta * s * i - beta * s * i_v - vaccination_rate * s) + s  # Update to the amount of individuals that are susceptible ## sir_s_n_exp
+    v_n = (vaccination_rate * s - beta * (1 - vaccine_efficacy) * v * i - beta * (
+                1 - vaccine_efficacy) * v * i_v) + v  # Update to the amount of individuals that are susceptible ## sir_v_n_exp
+    i_n = (
+                      beta * s * i + beta * s * i_v - gamma * i) + i  # Update to the amount of individuals that are infectious ## sir_i_n_exp
+    i_v_n = (beta * (1 - vaccine_efficacy) * v * i + beta * (
+                1 - vaccine_efficacy) * v * i_v - gamma * i_v) + i_v  # Update to the amount of individuals that are infectious ## sir_i_v_n_exp
+    r_n = gamma * i_v + gamma * i + r  # Update to the amount of individuals that are recovered ## sir_r_n_exp
+    v_e_n = vaccination_rate * s + v_e  # Update to the number of individuals that have ever been vaccinated
 
     scale = n / (
                 s_n + v_n + i_n + i_v_n + r_n)  # A scaling factor to compute updated disease variables ## sir_scale_exp
@@ -139,7 +170,8 @@ def sir(s, v, i, i_v, r, vaccination_rate, beta, gamma_unvaccinated, gamma_vacci
     i = i_n * scale  ## sir_i_exp
     i_v = i_v_n * scale  ## sir_i_v_exp
     r = r_n * scale  ## sir_r_exp
-    return s, v, i, i_v, r
+    v_e = v_e_n * scale  ## sir_r_exp #TODO: do we need to use the scaling factor here?
+    return s, v, i, i_v, r, v_e
 
 
 # ===============================================================================
@@ -160,11 +192,12 @@ def sir(s, v, i, i_v, r, vaccination_rate, beta, gamma_unvaccinated, gamma_vacci
 #     i_v_a       An array (list) used to record the currently vaccinated and infected population changes during the simulation
 #     r_a         An array (list) used to record the recovered population changes during the simulation
 #     e_a         An array (list) used to record the total (ever) infected (i + i_v + r) population changes during the simulation
+#     v_e         An array (list) used to record the total (ever) vaccinated population
 #
 #     Input Variables:
 #     vaccination_rate The current rate of vaccination of susceptible individuals
-#     gamma_unvaccinated       The expected recovery rate from COVID-19 for infected unvaccinated individuals
-#     gamma_vaccinated       The expected recovery rate from COVID-19 for infected vaccinated individuals
+#     vaccine_hesitancy      The proportion of the population hesistant to get vaccinated
+#     gamma       The expected recovery rate from COVID-19 for infected individuals
 #     i_day       Start day of COVID-19 infections
 #     N_p         Number of policies to use for the simulation
 #     betas       An array of beta values with one entry per beta
@@ -184,13 +217,14 @@ def sir(s, v, i, i_v, r, vaccination_rate, beta, gamma_unvaccinated, gamma_vacci
 #  Called by:   main
 #  Calls:       sir
 # ==============================================================================
-def sim_sir(s, v, i, i_v, r, vaccination_rate, gamma_unvaccinated, gamma_vaccinated, vaccine_efficacy, i_day,
+def sim_sir(s, v, i, i_v, r, v_e, gamma, max_vaccination_rate, vaccine_efficacy, vaccine_hesitancy, i_day,
             ### original inputs
             N_p, betas, days,  ### changes to original CHIME sim_sir to simplify policy bookkeeping
-            d_a, s_a, v_a, i_a, i_v_a, r_a, e_a,
+            d_a, s_a, v_a, i_a, i_v_a, r_a, e_a, v_e_a
             ### changes to original CHIME sim_sir simulation bookkeeping - here, bookkeeping represented as lists that are passed in as arguments
             ):
     n = s + v + i + i_v + r  ## simsir_n_exp
+    n_v_elig = s  ## simsir_n_v_elig_exp
     d = i_day  ## simsir_d_exp
 
     ### total_days from original CHIME sim_sir was used to determine the size of the
@@ -209,13 +243,14 @@ def sim_sir(s, v, i, i_v, r, vaccination_rate, gamma_unvaccinated, gamma_vaccina
             i_a[index] = i  ## simsir_loop_1_1_I_exp
             i_v_a[index] = i_v  ## simsir_loop_1_1_I_V_exp
             r_a[index] = r  ## simsir_loop_1_1_R_exp
-            e_a[index] = i + i_v + r  # updated "ever" infected (= i + i_v + r)  ### In CHIME sir.py, this is performed at end as sum of two numpy arrays; here perform iteratively
-
+            e_a[
+                index] = i + i_v + r  # updated "ever" infected (= i + i_v + r)  ### In CHIME sir.py, this is performed at end as sum of two numpy arrays; here perform iteratively
+            v_e_a[index] = v_e
+            vaccination_rate = get_vaccination_rate(v_e, n_v_elig, max_vaccination_rate, vaccine_hesitancy)
             index += 1  ## simsir_loop_1_1_idx_exp
 
-            s, v, i, i_v, r = sir(s, v, i, i_v, r, vaccination_rate, beta, gamma_unvaccinated, gamma_vaccinated,
-                                  vaccine_efficacy, n)  ## simsir_loop_1_1_call_sir_exp
-
+            s, v, i, i_v, r, v_e = sir(s, v, i, i_v, r, v_e, vaccination_rate, beta, gamma, vaccine_efficacy,
+                                       n)  ## simsir_loop_1_1_call_sir_exp
             d += 1  ## simsir_loop_1_1_d_exp
 
     # Record the last update (since sir() is called at the tail of the inner loop above)
@@ -225,8 +260,10 @@ def sim_sir(s, v, i, i_v, r, vaccination_rate, gamma_unvaccinated, gamma_vaccina
     i_a[index] = i  ## simsir_I_exp
     i_v_a[index] = i_v  ## simsir_I_exp
     r_a[index] = r  ## simsir_R_exp
+    e_a[index] = i + i_v + r
+    v_e_a[index] = v_e
 
-    return s, v, i, i_v, r, d_a, s_a, v_a, i_a, i_v_a, r_a, e_a  ### return
+    return s, v, i, i_v, r, d_a, s_a, v_a, i_a, i_v_a, r_a, e_a, v_e_a  ### return
 
 
 def main():
@@ -239,18 +276,17 @@ def main():
 
     # initial parameters
     i_day = 17.0  ## main_i_day_exp
-    n_days = [14, 90]  ## main_n_days_exp
+    n_days = [14, 60]  ## main_n_days_exp
     N_p = 2  ## main_N_p_exp
     N_t = sum(n_days) + 1  ## main_N_t_exp
-    infectious_days_unvaccinated = 14  ## main_inf_days_u_exp
-    infectious_days_vaccinated = 10  ## main_inf_days_v_exp
+    infections_days = 10.0  ## main_inf_days_exp
     relative_contact_rate = [0.0, 0.45]  ## main_rcr_exp
-    gamma_unvaccinated = 1.0 / infectious_days_unvaccinated  ## main_gamma_u_exp
-    gamma_vaccinated = 1.0 / infectious_days_vaccinated  ## main_gamma_v_exp
+    gamma = 1.0 / infections_days  ## main_gamma_exp
 
     # Vaccination parameters
-    vaccination_rate = 0.02  ## main_vaccination_rate_exp
+    max_vaccination_rate = 0.2  ## main_max_vaccination_rate_exp
     vaccine_efficacy = 0.85  ## main_vaccine_efficacy_exp
+    vaccine_hesitancy = 0.35  ## main_vaccine_hesitancy_Exp
 
     # initialize lists for policy and simulation state bookkeeping
     policys_betas = [0.0] * N_p  ## TODO size      # main_pbetas_seq
@@ -262,42 +298,44 @@ def main():
     i_v_a = [0.0] * N_t  ## main_I_V_seq
     r_a = [0.0] * N_t  ## main_R_seq
     e_a = [0.0] * N_t  # "ever" infected (= I + R) ## main_E_seq
+    v_e_a = [0.0] * N_t  # "ever" vaccinated ## main_V_E_seq
 
     # initial population
-    s_n = 1000  ## main_s_n_exp
+    s_n = 733  ## main_s_n_exp
     v_n = 0  ## main_v_n_exp
-    i_n = 1  ## main_i_n_exp
+    i_n = 266  ## main_i_n_exp
     i_v_n = 0  ## main_i_v_n_exp
     r_n = 0  ## main_r_n_exp
+    v_e_n = 0  ## main_v_e_exp
 
     # calculate beta under policy
     for p_idx in range(N_p):  ## main_loop_1
-        doubling_time = 2
+        doubling_time = 5
 
         growth_rate = get_growth_rate(doubling_time)  ## main_loop_1_gr_exp
-        beta = get_beta(growth_rate, gamma_unvaccinated, s_n,  ## main_loop_1_beta_exp
+        beta = get_beta(growth_rate, gamma, s_n,  ## main_loop_1_beta_exp
                         relative_contact_rate[p_idx])
         policys_betas[p_idx] = beta  ## main_loop_1_pbetas_exp
         policy_days[p_idx] = n_days[p_idx]  ## main_loop_1_pdays_exp
 
     # simulate dynamics (corresponding roughly to run_projection() )
-    s_n, v_n, i_n, i_v_n, r_n, d_a, s_a, v_a, i_a, i_v_a, r_a, e_a \
-        = sim_sir(s_n, v_n, i_n, i_v_n, r_n, vaccination_rate, gamma_unvaccinated, gamma_vaccinated, vaccine_efficacy,
+    s_n, v_n, i_n, i_v_n, r_n, d_a, s_a, v_a, i_a, i_v_a, r_a, e_a, v_e_a \
+        = sim_sir(s_n, v_n, i_n, i_v_n, r_n, v_e_n, gamma, max_vaccination_rate, vaccine_efficacy, vaccine_hesitancy,
                   i_day,  ## main_call_simsir_exp
                   N_p, policys_betas, policy_days,
-                  d_a, s_a, v_a, i_a, i_v_a, r_a, e_a)
+                  d_a, s_a, v_a, i_a, i_v_a, r_a, e_a, v_e_a)
 
-    return d_a, s_a, v_a, i_a, i_v_a, r_a, e_a  # return simulated dynamics
+    return d_a, s_a, v_a, i_a, i_v_a, r_a, e_a, v_e_a  # return simulated dynamics
 
 
 if __name__ == '__main__':
     outfile = sys.argv[1]
 
-    d_a, s_a, v_a, i_a, i_v_a, r_a, e_a = main()
+    d_a, s_a, v_a, i_a, i_v_a, r_a, e_a, v_e_a = main()
 
     out_data = list()
-    keys = ['d', 's', 'v', 'i', 'i_v', 'r', 'e']
-    data_tuples = zip(d_a, s_a, v_a, i_a, i_v_a, r_a, e_a)
+    keys = ['d', 's', 'v', 'i', 'i_v', 'r', 'e', 'v_e', 'v_e_a']
+    data_tuples = zip(d_a, s_a, v_a, i_a, i_v_a, r_a, e_a, v_e_a)
     for dat in data_tuples:
         out_data.append(
             dict(zip(keys, dat))
