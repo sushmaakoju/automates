@@ -53,7 +53,9 @@ def collect_variables(gromet):
 
     variables = list()
     for key, value in groups.items():
-        if len(value['tgt']) == 1 and value['tgt'][0][1] == 'PortOutput':
+        # TODO: extend to separate multiple output vars; but this is sufficient for now.
+        if value['tgt'][0][1] == 'PortOutput':  # new
+        # if len(value['tgt']) == 1 and value['tgt'][0][1] == 'PortOutput':  # original
             # print(f'{key}: {value} >>>> use tgt!')
             proxy_state = value['tgt'][0][0]
         else:
@@ -79,7 +81,7 @@ def collect_variables(gromet):
                           'metadata': None,
                           'syntax': 'Variable'})
 
-    # print('\n-----')
+    print('\n-----')
     for var in variables:
         print(var)
 
@@ -88,10 +90,21 @@ def collect_variables(gromet):
     return variables
 
 
+def insert_variables_into_gromet(gromet, variables, fileout):
+    with open(fileout, 'w') as json_out_file:
+        gromet['variables'] += variables
+        json.dump(gromet, json_out_file, indent=2)
+
+
 # MODEL = 'SimpleSIR_metadata_gromet_FunctionNetwork.json'
 # MODEL = 'CHIME_SIR_01_gromet_FunctionNetwork.json'
-MODEL = 'CHIME_SIR_01d_gromet_FunctionNetwork.json'
+# MODEL = 'CHIME_SIR_01e_gromet_FunctionNetwork.json'
+MODEL = 'CHIME_SIR_Base_gromet_FunctionNetwork.json'
+MODEL_OUT = 'CHIME_SIR_Base_variables_gromet_FunctionNetwork.json'
 
 if __name__ == '__main__':
     gromet = load_gromet(MODEL)
-    collect_variables(gromet)
+    variables = collect_variables(gromet)
+
+    insert_variables_into_gromet(gromet, variables, MODEL_OUT)
+    print('DONE')
