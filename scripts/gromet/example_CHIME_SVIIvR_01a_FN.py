@@ -532,12 +532,15 @@ def generate_gromet() -> Gromet:
              name=None, value=None, metadata=None,
              src=UidPort("P:simsir.in.betas"),
              tgt=UidPort("P:simsir_loop_1.in.betas")),
-        Wire(uid=UidWire("W:simsir.in.gamma>simsir_loop_1.in.gamma"),
-             type=None,
-             value_type=UidType("Float"),
-             name=None, value=None, metadata=None,
-             src=UidPort("P:simsir.in.gamma"),
-             tgt=UidPort("P:simsir_loop_1.in.gamma")),
+
+        # REMOVE_CHIME_SIR_Base
+        # Wire(uid=UidWire("W:simsir.in.gamma>simsir_loop_1.in.gamma"),
+        #      type=None,
+        #      value_type=UidType("Float"),
+        #      name=None, value=None, metadata=None,
+        #      src=UidPort("P:simsir.in.gamma"),
+        #      tgt=UidPort("P:simsir_loop_1.in.gamma")),
+
         Wire(uid=UidWire("W:simsir.in.s>simsir_loop_1.in.s"),
              type=None,
              value_type=UidType("Float"),
@@ -699,12 +702,15 @@ def generate_gromet() -> Gromet:
              name=None, value=None, metadata=None,
              src=UidPort("P:simsir_loop_1.in.r"),
              tgt=UidPort("P:simsir_loop_1_1.in.r")),
-        Wire(uid=UidWire("W:simsir_loop_1.in.gamma>simsir_loop_1_1.in.gamma"),
-             type=None,
-             value_type=UidType("Real"),
-             name=None, value=None, metadata=None,
-             src=UidPort("P:simsir_loop_1.in.gamma"),
-             tgt=UidPort("P:simsir_loop_1_1.in.gamma")),
+
+        # REMOVE_CHIME_SIR_Base
+        # Wire(uid=UidWire("W:simsir_loop_1.in.gamma>simsir_loop_1_1.in.gamma"),
+        #      type=None,
+        #      value_type=UidType("Real"),
+        #      name=None, value=None, metadata=None,
+        #      src=UidPort("P:simsir_loop_1.in.gamma"),
+        #      tgt=UidPort("P:simsir_loop_1_1.in.gamma")),
+
         Wire(uid=UidWire("W:simsir_loop_1_1.out.s>simsir_loop_1.out.s"),
              type=None,
              value_type=UidType("Real"),
@@ -834,12 +840,15 @@ def generate_gromet() -> Gromet:
              name=None, value=None, metadata=None,
              src=UidPort("P:simsir_loop_1_1.in.r"),
              tgt=UidPort("PC:simsir_loop_1_1_call_sir_exp.in.r")),
-        Wire(uid=UidWire("W:simsir_loop_1_1.in.gamma>simsir_loop_1_1_call_sir_exp.in.gamma"),
-             type=None,
-             value_type=UidType("Float"),
-             name=None, value=None, metadata=None,
-             src=UidPort("P:simsir_loop_1_1.in.gamma"),
-             tgt=UidPort("PC:simsir_loop_1_1_call_sir_exp.in.gamma")),
+
+        # REMOVE_CHIME_SIR_Base
+        # Wire(uid=UidWire("W:simsir_loop_1_1.in.gamma>simsir_loop_1_1_call_sir_exp.in.gamma"),
+        #      type=None,
+        #      value_type=UidType("Float"),
+        #      name=None, value=None, metadata=None,
+        #      src=UidPort("P:simsir_loop_1_1.in.gamma"),
+        #      tgt=UidPort("PC:simsir_loop_1_1_call_sir_exp.in.gamma")),
+
         Wire(uid=UidWire("W:simsir_loop_1_1.in.beta>simsir_loop_1_1_call_sir_exp.in.beta"),
              type=None,
              value_type=UidType("Float"),
@@ -896,18 +905,23 @@ def generate_gromet() -> Gromet:
              name=None, value=None, metadata=None,
              src=UidPort("P:sir.beta"),
              tgt=UidPort("P:sir_i_n_exp.beta")),
-        Wire(uid=UidWire("W:sir.gamma>sir_i_n_exp.gamma"),
-             type=None,
-             value_type=UidType("Float"),
-             name=None, value=None, metadata=None,
-             src=UidPort("P:sir.gamma"),
-             tgt=UidPort("P:sir_i_n_exp.gamma")),
-        Wire(uid=UidWire("W:sir.gamma>sir_r_n_exp.gamma"),
-             type=None,
-             value_type=UidType("Float"),
-             name=None, value=None, metadata=None,
-             src=UidPort("P:sir.gamma"),
-             tgt=UidPort("P:sir_r_n_exp.gamma")),
+
+        # REMOVE_CHIME_SIR_Base
+        # Wire(uid=UidWire("W:sir.gamma>sir_i_n_exp.gamma"),
+        #      type=None,
+        #      value_type=UidType("Float"),
+        #      name=None, value=None, metadata=None,
+        #      src=UidPort("P:sir.gamma"),
+        #      tgt=UidPort("P:sir_i_n_exp.gamma")),
+
+        # REMOVE_CHIME_SIR_Base
+        # Wire(uid=UidWire("W:sir.gamma>sir_r_n_exp.gamma"),
+        #      type=None,
+        #      value_type=UidType("Float"),
+        #      name=None, value=None, metadata=None,
+        #      src=UidPort("P:sir.gamma"),
+        #      tgt=UidPort("P:sir_r_n_exp.gamma")),
+
         Wire(uid=UidWire("W:sir.s_in>sir_s_n_exp.s"),
              type=None,
              value_type=UidType("Float"),
@@ -1657,12 +1671,15 @@ def generate_gromet() -> Gromet:
              value_type=UidType("Float"),
              name="r",
              value=None, metadata=None),
-        Port(uid=UidPort("P:simsir.in.gamma"),
-             box=UidBox("B:simsir"),
-             type=UidType("PortInput"),
-             value_type=UidType("Float"),
-             name="gamma",
-             value=None, metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # Port(uid=UidPort("P:simsir.in.gamma"),
+        #      box=UidBox("B:simsir"),
+        #      type=UidType("PortInput"),
+        #      value_type=UidType("Float"),
+        #      name="gamma",
+        #      value=None, metadata=None),
+
         Port(uid=UidPort("P:simsir.in.betas"),
              box=UidBox("B:simsir"),
              type=UidType("PortInput"),
@@ -1848,12 +1865,15 @@ def generate_gromet() -> Gromet:
              value_type=UidType("Float"),
              name="r",
              value=None, metadata=None),
-        Port(uid=UidPort("P:simsir_loop_1.in.gamma"),
-             box=UidBox("B:simsir_loop_1"),
-             type=UidType("PortInput"),
-             value_type=UidType("Float"),
-             name="gamma",
-             value=None, metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # Port(uid=UidPort("P:simsir_loop_1.in.gamma"),
+        #      box=UidBox("B:simsir_loop_1"),
+        #      type=UidType("PortInput"),
+        #      value_type=UidType("Float"),
+        #      name="gamma",
+        #      value=None, metadata=None),
+
         # simsir_loop_1 out <body>
         PortCall(uid=UidPort("PC:simsir_loop_1.out.days"),
                  call=UidPort("P:simsir_loop_1.in.days"),
@@ -1903,14 +1923,16 @@ def generate_gromet() -> Gromet:
                  name="r",
                  value=None,
                  metadata=None),
-        PortCall(uid=UidPort("PC:simsir_loop_1.out.gamma"),
-                 call=UidPort("P:simsir_loop_1.in.gamma"),
-                 box=UidBox("B:simsir_loop_1"),
-                 type=UidType("PortOutput"),
-                 value_type=UidType("Float"),
-                 name="gamma",
-                 value=None,
-                 metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # PortCall(uid=UidPort("PC:simsir_loop_1.out.gamma"),
+        #          call=UidPort("P:simsir_loop_1.in.gamma"),
+        #          box=UidBox("B:simsir_loop_1"),
+        #          type=UidType("PortOutput"),
+        #          value_type=UidType("Float"),
+        #          name="gamma",
+        #          value=None,
+        #          metadata=None),
 
         # simsir_loop_1_i_exp in
         Port(uid=UidPort("P:simsir_loop_1_i_exp.in.loop_1_i"),
@@ -2130,12 +2152,15 @@ def generate_gromet() -> Gromet:
              value_type=UidType("Float"),
              name="beta",
              value=None, metadata=None),
-        Port(uid=UidPort("P:simsir_loop_1_1.in.gamma"),
-             box=UidBox("B:simsir_loop_1_1"),
-             type=UidType("PortInput"),
-             value_type=UidType("Float"),
-             name="gamma",
-             value=None, metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # Port(uid=UidPort("P:simsir_loop_1_1.in.gamma"),
+        #      box=UidBox("B:simsir_loop_1_1"),
+        #      type=UidType("PortInput"),
+        #      value_type=UidType("Float"),
+        #      name="gamma",
+        #      value=None, metadata=None),
+
         # simsir_loop_1_1 out <body>
         PortCall(uid=UidPort("PC:simsir_loop_1_1.out.s"),
                  call=UidPort("P:simsir_loop_1_1.in.s"),
@@ -2169,14 +2194,17 @@ def generate_gromet() -> Gromet:
                  name="n",
                  value=None,
                  metadata=None),
-        PortCall(uid=UidPort("PC:simsir_loop_1_1.out.gamma"),
-                 call=UidPort("P:simsir_loop_1_1.in.gamma"),
-                 box=UidBox("B:simsir_loop_1_1"),
-                 type=UidType("PortOutput"),
-                 value_type=UidType("Integer"),
-                 name="gamma",
-                 value=None,
-                 metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # PortCall(uid=UidPort("PC:simsir_loop_1_1.out.gamma"),
+        #          call=UidPort("P:simsir_loop_1_1.in.gamma"),
+        #          box=UidBox("B:simsir_loop_1_1"),
+        #          type=UidType("PortOutput"),
+        #          value_type=UidType("Integer"),
+        #          name="gamma",
+        #          value=None,
+        #          metadata=None),
+
         PortCall(uid=UidPort("PC:simsir_loop_1_1.out.beta"),
                  call=UidPort("P:simsir_loop_1_1.in.beta"),
                  box=UidBox("B:simsir_loop_1_1"),
@@ -2268,12 +2296,15 @@ def generate_gromet() -> Gromet:
                  type=UidType("PortInput"),
                  value_type=UidType("Float"),
                  name=None, value=None, metadata=None),
-        PortCall(uid=UidPort("PC:simsir_loop_1_1_call_sir_exp.in.gamma"),
-                 box=UidBox("B:simsir_loop_1_1_call_sir_exp"),
-                 call=UidPort("P:sir.gamma"),
-                 type=UidType("PortInput"),
-                 value_type=UidType("Float"),
-                 name=None, value=None, metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # PortCall(uid=UidPort("PC:simsir_loop_1_1_call_sir_exp.in.gamma"),
+        #          box=UidBox("B:simsir_loop_1_1_call_sir_exp"),
+        #          call=UidPort("P:sir.gamma"),
+        #          type=UidType("PortInput"),
+        #          value_type=UidType("Float"),
+        #          name=None, value=None, metadata=None),
+
         PortCall(uid=UidPort("PC:simsir_loop_1_1_call_sir_exp.in.n"),
                  box=UidBox("B:simsir_loop_1_1_call_sir_exp"),
                  call=UidPort("P:sir.n"),
@@ -2408,12 +2439,15 @@ def generate_gromet() -> Gromet:
              value_type=UidType("Float"),
              name="i",
              value=None, metadata=None),
-        Port(uid=UidPort("P:sir_i_n_exp.gamma"),
-             box=UidBox("B:sir_i_n_exp"),
-             type=UidType("PortInput"),
-             value_type=UidType("Float"),
-             name="gamma",
-             value=None, metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # Port(uid=UidPort("P:sir_i_n_exp.gamma"),
+        #      box=UidBox("B:sir_i_n_exp"),
+        #      type=UidType("PortInput"),
+        #      value_type=UidType("Float"),
+        #      name="gamma",
+        #      value=None, metadata=None),
+
         # sir_i_n_exp out
         Port(uid=UidPort("P:sir_i_n_exp.i_n"),
              box=UidBox("B:sir_i_n_exp"),
@@ -2423,12 +2457,14 @@ def generate_gromet() -> Gromet:
              value=None, metadata=None),
 
         # sir_r_n_exp in
-        Port(uid=UidPort("P:sir_r_n_exp.gamma"),
-             box=UidBox("B:sir_r_n_exp"),
-             type=UidType("PortInput"),
-             value_type=UidType("Float"),
-             name="gamma",
-             value=None, metadata=None),
+        # REMOVE_CHIME_SIR_Base
+        # Port(uid=UidPort("P:sir_r_n_exp.gamma"),
+        #      box=UidBox("B:sir_r_n_exp"),
+        #      type=UidType("PortInput"),
+        #      value_type=UidType("Float"),
+        #      name="gamma",
+        #      value=None, metadata=None),
+
         Port(uid=UidPort("P:sir_r_n_exp.i"),
              box=UidBox("B:sir_r_n_exp"),
              type=UidType("PortInput"),
@@ -2671,7 +2707,10 @@ def generate_gromet() -> Gromet:
                        UidPort("PC:simsir_loop_1_1_call_sir_exp.in.i"),
                        UidPort("PC:simsir_loop_1_1_call_sir_exp.in.r"),
                        UidPort("PC:simsir_loop_1_1_call_sir_exp.in.beta"),
-                       UidPort("PC:simsir_loop_1_1_call_sir_exp.in.gamma"),
+
+                       # REMOVE_CHIME_SIR_Base
+                       # UidPort("PC:simsir_loop_1_1_call_sir_exp.in.gamma"),
+
                        UidPort("PC:simsir_loop_1_1_call_sir_exp.in.n"),
                        UidPort("PC:simsir_loop_1_1_call_sir_exp.out.s"),
                        UidPort("PC:simsir_loop_1_1_call_sir_exp.out.i"),
@@ -2746,14 +2785,20 @@ def generate_gromet() -> Gromet:
                  UidPort("P:simsir_loop_1_1.in.i"),
                  UidPort("P:simsir_loop_1_1.in.r"),
                  UidPort("P:simsir_loop_1_1.in.n"),
-                 UidPort("P:simsir_loop_1_1.in.gamma"),
+
+                 # REMOVE_CHIME_SIR_Base
+                 # UidPort("P:simsir_loop_1_1.in.gamma"),
                  UidPort("P:simsir_loop_1_1.in.beta"),
+
                  # -- "body" loop outputs
                  UidPort("PC:simsir_loop_1_1.out.s"),
                  UidPort("PC:simsir_loop_1_1.out.i"),
                  UidPort("PC:simsir_loop_1_1.out.r"),
                  UidPort("PC:simsir_loop_1_1.out.n"),
-                 UidPort("PC:simsir_loop_1_1.out.gamma"),
+
+                 # REMOVE_CHIME_SIR_Base
+                 # UidPort("PC:simsir_loop_1_1.out.gamma"),
+
                  UidPort("PC:simsir_loop_1_1.out.beta")
              ],
 
@@ -2772,7 +2817,10 @@ def generate_gromet() -> Gromet:
                  UidWire("W:simsir_loop_1_1.in.s>simsir_loop_1_1_call_sir_exp.in.s"),
                  UidWire("W:simsir_loop_1_1.in.i>simsir_loop_1_1_call_sir_exp.in.i"),
                  UidWire("W:simsir_loop_1_1.in.r>simsir_loop_1_1_call_sir_exp.in.r"),
-                 UidWire("W:simsir_loop_1_1.in.gamma>simsir_loop_1_1_call_sir_exp.in.gamma"),
+
+                 # REMOVE_CHIME_SIR_Base
+                 # UidWire("W:simsir_loop_1_1.in.gamma>simsir_loop_1_1_call_sir_exp.in.gamma"),
+
                  UidWire("W:simsir_loop_1_1.in.beta>simsir_loop_1_1_call_sir_exp.in.beta"),
                  UidWire("W:simsir_loop_1_1_call_sir_exp.out.s>simsir_loop_1_1.out.s"),
                  UidWire("W:simsir_loop_1_1_call_sir_exp.out.i>simsir_loop_1_1.out.i"),
@@ -2922,7 +2970,9 @@ def generate_gromet() -> Gromet:
                  UidPort("P:simsir_loop_1.in.s"),
                  UidPort("P:simsir_loop_1.in.i"),
                  UidPort("P:simsir_loop_1.in.r"),
-                 UidPort("P:simsir_loop_1.in.gamma"),
+
+                 # REMOVE_CHIME_SIR_Base
+                 # UidPort("P:simsir_loop_1.in.gamma"),
 
                  # -- "body" loop outputs
                  UidPort("PC:simsir_loop_1.out.days"),
@@ -2931,7 +2981,9 @@ def generate_gromet() -> Gromet:
                  UidPort("PC:simsir_loop_1.out.s"),
                  UidPort("PC:simsir_loop_1.out.i"),
                  UidPort("PC:simsir_loop_1.out.r"),
-                 UidPort("PC:simsir_loop_1.out.gamma"),
+
+                 # REMOVE_CHIME_SIR_Base
+                 # UidPort("PC:simsir_loop_1.out.gamma"),
 
             ],
 
@@ -2962,7 +3014,10 @@ def generate_gromet() -> Gromet:
                  UidWire("W:simsir_loop_1.in.s>simsir_loop_1_1.in.s"),
                  UidWire("W:simsir_loop_1.in.i>simsir_loop_1_1.in.i"),
                  UidWire("W:simsir_loop_1.in.r>simsir_loop_1_1.in.r"),
-                 UidWire("W:simsir_loop_1.in.gamma>simsir_loop_1_1.in.gamma"),
+
+                 # REMOVE_CHIME_SIR_Base
+                 # UidWire("W:simsir_loop_1.in.gamma>simsir_loop_1_1.in.gamma"),
+
                  UidWire("W:simsir_loop_1_1.out.s>simsir_loop_1.out.s"),
                  UidWire("W:simsir_loop_1_1.out.i>simsir_loop_1.out.i"),
                  UidWire("W:simsir_loop_1_1.out.r>simsir_loop_1.out.r"),
@@ -3047,7 +3102,10 @@ def generate_gromet() -> Gromet:
                      UidPort("P:simsir.in.s"),
                      UidPort("P:simsir.in.i"),
                      UidPort("P:simsir.in.r"),
-                     UidPort("P:simsir.in.gamma"),
+
+                     # REMOVE_CHIME_SIR_Base
+                     # UidPort("P:simsir.in.gamma"),
+
                      UidPort("P:simsir.in.betas"),
                      UidPort("P:simsir.in.days"),
                      UidPort("P:simsir.in.N_p"),
@@ -3068,7 +3126,10 @@ def generate_gromet() -> Gromet:
                      UidWire("W:simsir.loop_1_i>simsir_loop_1.in.loop_1_i"),
                      UidWire("W:simsir.in.days>simsir_loop_1.in.days"),
                      UidWire("W:simsir.in.betas>simsir_loop_1.in.betas"),
-                     UidWire("W:simsir.in.gamma>simsir_loop_1.in.gamma"),
+
+                     # REMOVE_CHIME_SIR_Base
+                     # UidWire("W:simsir.in.gamma>simsir_loop_1.in.gamma"),
+
                      UidWire("W:simsir.in.s>simsir_loop_1.in.s"),
                      UidWire("W:simsir.in.s>simsir_n_exp.in.s"),
                      UidWire("W:simsir.in.i>simsir_loop_1.in.i"),
@@ -3121,7 +3182,12 @@ def generate_gromet() -> Gromet:
               args=[Literal(uid=None, type=UidType("Int"), value=Val("-1"),
                             name=None, metadata=None),
                     UidPort("P:sir_i_n_exp.i"),
-                    UidPort("P:sir_i_n_exp.gamma")])
+
+                    # TODO
+                    # REMOVE_CHIME_SIR_Base
+                    # UidPort("P:sir_i_n_exp.gamma")
+
+                    ])
     # e5 = (+ e3 e4 i)
     e5 = Expr(call=RefOp(UidOp('+')),
               args=[e3, e4, UidPort("P:sir_i_n_exp.i")])
@@ -3131,7 +3197,10 @@ def generate_gromet() -> Gromet:
                              ports=[UidPort("P:sir_i_n_exp.beta"),
                                     UidPort("P:sir_i_n_exp.s"),
                                     UidPort("P:sir_i_n_exp.i"),
-                                    UidPort("P:sir_i_n_exp.gamma"),
+
+                                    # REMOVE_CHIME_SIR_Base
+                                    # UidPort("P:sir_i_n_exp.gamma"),
+
                                     UidPort("P:sir_i_n_exp.i_n")],
                              tree=e5,
                              metadata=None)
@@ -3139,7 +3208,11 @@ def generate_gromet() -> Gromet:
     # Expression sir_r_n_exp
     # e6 = (* gamma i r) -> e6
     e6 = Expr(call=RefOp(UidOp('*')),
-              args=[UidPort("P:sir_r_n_exp.gamma"),
+              args=[
+                    # TODO
+                    # REMOVE_CHIME_SIR_Base
+                    # UidPort("P:sir_r_n_exp.gamma"),
+
                     UidPort("P:sir_r_n_exp.i"),
                     UidPort("P:sir_r_n_exp.r")])
     # e7 = (+ e6 r) -> e7
@@ -3148,7 +3221,9 @@ def generate_gromet() -> Gromet:
     sir_r_n_exp = Expression(uid=UidBox("B:sir_r_n_exp"),
                              type=None,
                              name=None,
-                             ports=[UidPort("P:sir_r_n_exp.gamma"),
+                             ports=[# REMOVE_CHIME_SIR_Base
+                                    # UidPort("P:sir_r_n_exp.gamma"),
+
                                     UidPort("P:sir_r_n_exp.i"),
                                     UidPort("P:sir_r_n_exp.r"),
                                     UidPort("P:sir_r_n_exp.r_n")],
@@ -3237,8 +3312,13 @@ def generate_gromet() -> Gromet:
                  wires=[UidWire("W:sir.n>sir_scale_exp.n"),
                         UidWire("W:sir.beta>sir_s_n_exp.beta"),
                         UidWire("W:sir.beta>sir_i_n_exp.beta"),
-                        UidWire("W:sir.gamma>sir_i_n_exp.gamma"),
-                        UidWire("W:sir.gamma>sir_r_n_exp.gamma"),
+
+                        # REMOVE_CHIME_SIR_Base
+                        # UidWire("W:sir.gamma>sir_i_n_exp.gamma"),
+
+                        # REMOVE_CHIME_SIR_Base
+                        # UidWire("W:sir.gamma>sir_r_n_exp.gamma"),
+
                         UidWire("W:sir.s_in>sir_s_n_exp.s"),
                         UidWire("W:sir.s_in>sir_i_n_exp.s"),
                         UidWire("W:sir.i_in>sir_s_n_exp.i"),
