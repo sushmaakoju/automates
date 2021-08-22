@@ -3,3 +3,8 @@
 *.png
 uml
 examples
+
+# ignore dev-helper working files
+graveyard
+graveyard/example_CHIME_SIR_Base_FN.py
+checking-changes-to-variable-extraction
