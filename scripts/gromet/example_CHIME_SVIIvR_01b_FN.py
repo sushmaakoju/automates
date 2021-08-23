@@ -2462,12 +2462,15 @@ def generate_gromet() -> Gromet:
              value_type=UidType("Float"),
              name="beta",
              value=None, metadata=None),
-        Port(uid=UidPort("P:sir.gamma"),
-             box=UidBox("B:sir"),
-             type=UidType("PortInput"),
-             value_type=UidType("Float"),
-             name="gamma",
-             value=None, metadata=None),
+
+        # REMOVE_CHIME_SIR_Base
+        # Port(uid=UidPort("P:sir.gamma"),
+        #      box=UidBox("B:sir"),
+        #      type=UidType("PortInput"),
+        #      value_type=UidType("Float"),
+        #      name="gamma",
+        #      value=None, metadata=None),
+
         Port(uid=UidPort("P:sir.s_in"),
              box=UidBox("B:sir"),
              type=UidType("PortInput"),
@@ -3457,7 +3460,10 @@ def generate_gromet() -> Gromet:
                  name=UidOp("sir"),
                  ports=[UidPort("P:sir.n"),
                         UidPort("P:sir.beta"),
-                        UidPort("P:sir.gamma"),
+
+                        # REMOVE_CHIME_SIR_Base
+                        # UidPort("P:sir.gamma"),
+                        
                         UidPort("P:sir.s_in"),
                         UidPort("P:sir.i_in"),
                         UidPort("P:sir.r_in"),
