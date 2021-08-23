@@ -703,6 +703,8 @@ def validate(gromet):
                         print(f"Error [FN root 1a]: root Box '{root_box['uid']}' has"
                               f" PortInput type Port '{p_id}'"
                               f" that does not have outgoing Wire.")
+
+                    # CTM 2021-08-15: it is ok for a PortOutput
                     elif port['type'] == 'PortOutput' and \
                             p_id not in objects['wires_by_tgt_id']:
                         print(f"Error [FN root 1b]: root Box '{root_box['uid']}' had"
@@ -799,7 +801,7 @@ def validate(gromet):
                               f" -- must have no incoming.")
                     if p_id not in objects['wires_by_src_id']:
                         print(f"Error [FN 6b]: called Box '{b_id}' has '{port_syntax}'"
-                              f" of type '{port_type}' with no outgoing Wires"
+                              f" called '{p_id}' of type '{port_type}' with no outgoing Wires"
                               f" -- must have at least one.")
                 # (7) every PortOutput must have only one incoming Wire and no outgoing Wires
                 if port_type == 'PortOutput':
@@ -971,7 +973,12 @@ DEFAULT_ROOT = 'examples'
 # DEFAULT_PATH = 'examples/cond_ex1_gromet_FunctionNetwork.json'
 # DEFAULT_PATH = 'loop_ex1_gromet_FunctionNetwork.json'
 # DEFAULT_PATH = 'loop_ex2_gromet_FunctionNetwork.json'
-DEFAULT_PATH = 'CHIME_SIR_gromet_FunctionNetwork.json'
+# DEFAULT_PATH = 'CHIME_SIR_gromet_FunctionNetwork.json'
+# DEFAULT_PATH = 'CHIME_SIR--GroMEt-Daniel.json'
+# DEFAULT_PATH = 'CHIME_SIR_01f_gromet_FunctionNetwork.json'
+# DEFAULT_PATH = 'CHIME_SIR_01g_gromet_FunctionNetwork.json'
+# DEFAULT_PATH = 'CHIME_SIR_Base_gromet_FunctionNetwork.json'
+DEFAULT_PATH = 'CHIME_SVIIvR_gromet_FunctionNetwork.json'
 FORCE_BATCH = False  # True
 
 
