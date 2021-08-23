@@ -84,3 +84,6 @@
 #     d_idx       Index to be used for days in the current policy
 #     idx         Index to be used to access arrays for storing simulated outputs
 #     total_inf   The total population that is ever infected at a timestep during the simulation
+
+# From main:
+#     infections_days  How long an infection lasts (in days)
