@@ -886,6 +886,44 @@ def generate_gromet() -> Gromet:
 
         # -- sir() Wires --
 
+        ### -- CHIME_SVIIvR -- START
+
+        # Wire
+        # TODO Create: UidPort("P:sir_v_n_exp.out.v_n")
+        # UidPort("P:sir_v_exp.in.v_n"),
+
+        Wire(uid=UidWire("W:sir_scale_exp.scale>sir_v_exp.in.scale"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:sir_scale_exp.scale"),
+             tgt=UidPort("P:sir_v_exp.in.scale")),
+        Wire(uid=UidWire("W:sir_v_exp.out.v>sir.out.v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:sir_v_exp.out.v"),
+             tgt=UidPort("P:sir.out.v")),
+
+        # Wire
+        # TODO Create: UidPort("P:sir_i_v_n_exp.out.i_v_n")
+        # UidPort("P:sir_i_v_exp.in.i_v_n"),
+
+        Wire(uid=UidWire("W:sir_scale_exp.scale>sir_i_v_exp.in.scale"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:sir_scale_exp.scale"),
+             tgt=UidPort("P:sir_i_v_exp.in.scale")),
+        Wire(uid=UidWire("W:sir_i_v_exp.out.i_v>sir.out.i_v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:sir_i_v_exp.out.i_v"),
+             tgt=UidPort("P:sir.out.i_v")),
+
+        ### -- CHIME_SVIIvR -- END
+
         # sir
         Wire(uid=UidWire("W:sir.n>sir_scale_exp.n"),
              type=None,
@@ -2336,6 +2374,81 @@ def generate_gromet() -> Gromet:
 
         # -- sir() Ports --
 
+        ### -- CHIME_SVIIvR -- START
+
+        # sir in CHIME_SVIIvR
+        # sir out CHIME_SVIIvR
+        Port(uid=UidPort("P:sir.out.v"),
+             box=UidBox("B:sir"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="v",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:sir.out.i_v"),
+             box=UidBox("B:sir"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
+
+        # sir_v_exp in
+        Port(uid=UidPort("P:sir_v_exp.in.v_n"),
+             box=UidBox("B:sir_v_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="v_n",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:sir_v_exp.in.scale"),
+             box=UidBox("B:sir_v_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="scale",
+             value=None, metadata=None),
+        # sir_v_exp out
+        Port(uid=UidPort("P:sir_v_exp.out.v"),
+             box=UidBox("B:sir_v_exp"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="v",
+             value=None, metadata=None),
+
+        # sir_i_v_exp in
+        Port(uid=UidPort("P:sir_i_v_exp.in.i_v_n"),
+             box=UidBox("B:sir_i_v_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i_v_n",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:sir_i_v_exp.in.scale"),
+             box=UidBox("B:sir_i_v_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="scale",
+             value=None, metadata=None),
+        # sir_i_v_exp out
+        Port(uid=UidPort("P:sir_i_v_exp.out.i_v"),
+             box=UidBox("B:sir_i_v_exp"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
+
+        # sir_scale_exp in CHIME_SVIIvR
+        Port(uid=UidPort("P:sir_scale_exp.v_n"),
+             box=UidBox("B:sir_scale_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="v_n",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:sir_scale_exp.i_v_n"),
+             box=UidBox("B:sir_scale_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i_v_n",
+             value=None, metadata=None),
+
+        ### -- CHIME_SVIIvR -- END
+
         # sir in
         Port(uid=UidPort("P:sir.n"),
              box=UidBox("B:sir"),
@@ -3235,7 +3348,12 @@ def generate_gromet() -> Gromet:
     e8 = Expr(call=RefOp(UidOp('+')),
               args=[UidPort("P:sir_scale_exp.s_n"),
                     UidPort("P:sir_scale_exp.i_n"),
-                    UidPort("P:sir_scale_exp.r_n")])
+                    UidPort("P:sir_scale_exp.r_n"),
+                    ### -- CHIME_SVIIvR -- START
+                    UidPort("P:sir_scale_exp.v_n"),
+                    UidPort("P:sir_scale_exp.i_v_n")
+                    ### -- CHIME_SVIIvR -- END
+                    ])
     # e9 = (/ n e8)
     e9 = Expr(call=RefOp(UidOp('/')),
               args=[UidPort("P:sir_scale_exp.n"),
@@ -3247,7 +3365,12 @@ def generate_gromet() -> Gromet:
                                       UidPort("P:sir_scale_exp.s_n"),
                                       UidPort("P:sir_scale_exp.i_n"),
                                       UidPort("P:sir_scale_exp.r_n"),
-                                      UidPort("P:sir_scale_exp.scale")],
+                                      UidPort("P:sir_scale_exp.scale"),
+                                      ### -- CHIME_SVIIvR -- START
+                                      UidPort("P:sir_scale_exp.v_n"),
+                                      UidPort("P:sir_scale_exp.i_v_n"),
+                                      ### -- CHIME_SVIIvR -- END
+                                      ],
                                tree=e9,
                                metadata=None)
 
@@ -3293,6 +3416,40 @@ def generate_gromet() -> Gromet:
                            tree=e12,
                            metadata=None)
 
+    ### -- CHIME_SVIIvR -- START
+
+    # sir_v_exp
+    sir_v_exp_e0 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[UidPort("P:sir_v_exp.in.v_n"),
+                   UidPort("P:sir_v_exp.in.scale")])
+    sir_v_exp = \
+        Expression(uid=UidBox("B:sir_v_exp"),
+                   type=None,
+                   name=None,
+                   ports=[UidPort("P:sir_v_exp.in.v_n"),
+                          UidPort("P:sir_v_exp.in.scale"),
+                          UidPort("P:sir_v_exp.out.v")],
+                   tree=sir_v_exp_e0,
+                   metadata=None)
+
+    # sir_i_v_exp
+    sir_i_v_exp_0 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[UidPort("P:sir_i_v_exp.in.i_v_n"),
+                   UidPort("P:sir_i_v_exp.in.scale")])
+    sir_i_v_exp = \
+        Expression(uid=UidBox("B:sir_i_v_exp"),
+                   type=None,
+                   name=None,
+                   ports=[UidPort("P:sir_i_v_exp.in.i_v_n"),
+                          UidPort("P:sir_i_v_exp.in.scale"),
+                          UidPort("P:sir_i_v_exp.out.i_v")],
+                   tree=sir_i_v_exp_0,
+                   metadata=None)
+
+    ### -- CHIME_SVIIvR -- END
+
     # Function sir
     sir = \
         Function(uid=UidBox("B:sir"),
@@ -3306,7 +3463,13 @@ def generate_gromet() -> Gromet:
                         UidPort("P:sir.r_in"),
                         UidPort("P:sir.s_out"),
                         UidPort("P:sir.i_out"),
-                        UidPort("P:sir.r_out")],
+                        UidPort("P:sir.r_out"),
+
+                        ### -- CHIME_SVIIvR -- START
+                        UidPort("P:sir.out.v"),
+                        UidPort("P:sir.out.i_v"),
+                        ### -- CHIME_SVIIvR -- END
+                        ],
 
                  # contents
                  wires=[UidWire("W:sir.n>sir_scale_exp.n"),
@@ -3336,14 +3499,28 @@ def generate_gromet() -> Gromet:
                         UidWire("W:sir_scale_exp.scale>sir_r_exp.scale"),
                         UidWire("W:sir_s_exp.s>sir.s_out"),
                         UidWire("W:sir_i_exp.i>sir.i_out"),
-                        UidWire("W:sir_r_exp.r>sir.r_out")],
+                        UidWire("W:sir_r_exp.r>sir.r_out"),
+
+                        ### -- CHIME_SVIIvR -- START
+                        UidWire("W:sir_scale_exp.scale>sir_v_exp.in.scale"),
+                        UidWire("W:sir_v_exp.out.v>sir.out.v"),
+                        UidWire("W:sir_scale_exp.scale>sir_i_v_exp.in.scale"),
+                        UidWire("W:sir_i_v_exp.out.i_v>sir.out.i_v"),
+                        ### -- CHIME_SVIIvR -- END
+                        ],
                  boxes=[UidBox("B:sir_s_n_exp"),
                         UidBox("B:sir_i_n_exp"),
                         UidBox("B:sir_r_n_exp"),
                         UidBox("B:sir_scale_exp"),
                         UidBox("B:sir_s_exp"),
                         UidBox("B:sir_i_exp"),
-                        UidBox("B:sir_r_exp")],
+                        UidBox("B:sir_r_exp"),
+
+                        ### -- CHIME_SVIIvR -- START
+                        UidBox("B:sir_v_exp"),
+                        UidBox("B:sir_i_v_exp"),
+                        ### -- CHIME_SVIIvR -- END
+                        ],
                  junctions=None,
 
                  metadata=None)
@@ -3817,35 +3994,42 @@ def generate_gromet() -> Gromet:
 
     junctions = junctions_main + junctions_simsir + junctions_simsir_loop_1
 
-    boxes = [main,
-             # REMOVE_CHIME_SIR_Base: main_gamma_exp,
-             main_pbetas_seq, main_pdays_seq,
-             main_loop_1, main_loop_1_cond, main_loop_1_p_idx_exp,
-             main_loop_1_dtime_exp, main_loop_1_call_growth_rate_exp,
-             main_loop_1_call_get_beta_exp, main_loop_1_pbetas_exp, main_loop_1_pdays_exp,
-             main_call_simsir,
-             main_ever_infected_exp,
+    boxes = [
+        main,
+        # REMOVE_CHIME_SIR_Base: main_gamma_exp,
+        main_pbetas_seq, main_pdays_seq,
+        main_loop_1, main_loop_1_cond, main_loop_1_p_idx_exp,
+        main_loop_1_dtime_exp, main_loop_1_call_growth_rate_exp,
+        main_loop_1_call_get_beta_exp, main_loop_1_pbetas_exp, main_loop_1_pdays_exp,
+        main_call_simsir,
+        main_ever_infected_exp,
 
-             get_growth_rate,
-             get_beta, get_beta_updated_growth_rate_expr, get_beta_inv_contact_rate_exp, get_beta_betas_exp,
+        get_growth_rate,
+        get_beta, get_beta_updated_growth_rate_expr, get_beta_inv_contact_rate_exp, get_beta_betas_exp,
 
-             simsir,
-             simsir_n_exp,
-             simsir_loop_1_range_init_exp, simsir_loop_1_get_p_idx_init_exp,
+        simsir,
+        simsir_n_exp,
+        simsir_loop_1_range_init_exp, simsir_loop_1_get_p_idx_init_exp,
 
-             simsir_loop_1,
-             simsir_loop_1_cond, simsir_loop_1_i_exp, simsir_loop_1_get_p_idx_exp,
-             simsir_loop_1_n_days_exp, simsir_loop_1_get_beta_exp,
-             simsir_loop_1_1_range_init_exp, simsir_loop_1_1_get_d_idx_init_exp,
+        simsir_loop_1,
+        simsir_loop_1_cond, simsir_loop_1_i_exp, simsir_loop_1_get_p_idx_exp,
+        simsir_loop_1_n_days_exp, simsir_loop_1_get_beta_exp,
+        simsir_loop_1_1_range_init_exp, simsir_loop_1_1_get_d_idx_init_exp,
 
-             simsir_loop_1_1,
-             simsir_loop_1_1_cond, simsir_loop_1_1_i_exp, simsir_loop_1_1_get_d_idx_exp,
-             simsir_loop_1_1_call_sir_exp,
+        simsir_loop_1_1,
+        simsir_loop_1_1_cond, simsir_loop_1_1_i_exp, simsir_loop_1_1_get_d_idx_exp,
+        simsir_loop_1_1_call_sir_exp,
 
-             sir,
-             sir_s_n_exp, sir_i_n_exp, sir_r_n_exp,
-             sir_scale_exp,
-             sir_s_exp, sir_i_exp, sir_r_exp]
+        sir,
+        sir_s_n_exp, sir_i_n_exp, sir_r_n_exp,
+        sir_scale_exp,
+        sir_s_exp, sir_i_exp, sir_r_exp,
+
+        ### -- CHIME_SVIIvR -- START
+        sir_v_exp, sir_i_v_exp,
+        ### -- CHIME_SVIIvR -- END
+
+    ]
 
     variables = variables_sir
 
