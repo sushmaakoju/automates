@@ -888,7 +888,15 @@ def generate_gromet() -> Gromet:
 
         ### -- CHIME_SVIIvR -- START
 
-        # Wire
+        # TODO Wire
+        # TODO Create: UidPort("P:sir.in.i_v")
+        # UidPort("P:sir_s_n_exp.in.i_v"),
+
+        # TODO Wire
+        # TODO Create: UidPort("P:sir.in.vaccination_rate")
+        # UidPort("P:sir_s_n_exp.in.vaccination_rate"),
+
+        # TODO Wire
         # TODO Create: UidPort("P:sir_v_n_exp.out.v_n")
         # UidPort("P:sir_v_exp.in.v_n"),
 
@@ -905,7 +913,7 @@ def generate_gromet() -> Gromet:
              src=UidPort("P:sir_v_exp.out.v"),
              tgt=UidPort("P:sir.out.v")),
 
-        # Wire
+        # TODO Wire
         # TODO Create: UidPort("P:sir_i_v_n_exp.out.i_v_n")
         # UidPort("P:sir_i_v_exp.in.i_v_n"),
 
@@ -2391,6 +2399,20 @@ def generate_gromet() -> Gromet:
              name="i_v",
              value=None, metadata=None),
 
+        # sir_s_n_exp in
+        Port(uid=UidPort("P:sir_s_n_exp.in.i_v"),
+             box=UidBox("B:sir_s_n_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:sir_s_n_exp.in.vaccination_rate"),
+             box=UidBox("B:sir_s_n_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="vaccination_rate",
+             value=None, metadata=None),
+
         # sir_v_exp in
         Port(uid=UidPort("P:sir_v_exp.in.v_n"),
              box=UidBox("B:sir_v_exp"),
@@ -3267,25 +3289,59 @@ def generate_gromet() -> Gromet:
     # -- sir() --
 
     # Expression sir_s_n_exp
-    # e1 = (* -1 beta i s) -> e1
-    e1 = Expr(call=RefOp(UidOp('*')),
-              args=[Literal(uid=None, type=UidType("Int"), value=Val("-1"),
-                            name=None, metadata=None),
-                    UidPort("P:sir_s_n_exp.beta"),
-                    UidPort("P:sir_s_n_exp.s"),
-                    UidPort("P:sir_s_n_exp.i")])
+    # sir_s_n_exp_e0 = (* -1 beta s i)
+    sir_s_n_exp_e0 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[Literal(uid=None, type=UidType("Int"), value=Val("-1"),
+                           name=None, metadata=None),
+                   UidPort("P:sir_s_n_exp.beta"),
+                   UidPort("P:sir_s_n_exp.s"),
+                   UidPort("P:sir_s_n_exp.i")])
+    ### -- CHIME_SVIIvR -- START
+    # sir_s_n_exp_e1 = (* -1 beta s i_v)
+    sir_s_n_exp_e1 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[Literal(uid=None, type=UidType("Int"), value=Val("-1"),
+                           name=None, metadata=None),
+                   UidPort("P:sir_s_n_exp.beta"),
+                   UidPort("P:sir_s_n_exp.s"),
+                   UidPort("P:sir_s_n_exp.in.i_v")])
+    # sir_s_n_exp_e2 = (* -1 vaccination_rate s)
+    sir_s_n_exp_e2 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[Literal(uid=None, type=UidType("Int"), value=Val("-1"),
+                           name=None, metadata=None),
+                   UidPort("P:sir_s_n_exp.in.vaccination_rate"),
+                   UidPort("P:sir_s_n_exp.s")])
+    ### -- CHIME_SVIIvR -- END
     # e2 = (+ e1 s) -> e2
-    e2 = Expr(call=RefOp(UidOp('+')),
-              args=[e1, UidPort("P:sir_s_n_exp.s")])
+    sir_s_n_exp_e3 = \
+        Expr(call=RefOp(UidOp('+')),
+             args=[sir_s_n_exp_e0,
+                   ### -- CHIME_SVIIvR -- START
+                   sir_s_n_exp_e1,
+                   sir_s_n_exp_e2,
+                   ### -- CHIME_SVIIvR -- END
+                   UidPort("P:sir_s_n_exp.s")])
     sir_s_n_exp = Expression(uid=UidBox("B:sir_s_n_exp"),
                              type=None,
                              name=None,
                              ports=[UidPort("P:sir_s_n_exp.beta"),
                                     UidPort("P:sir_s_n_exp.s"),
                                     UidPort("P:sir_s_n_exp.i"),
+
+                                    ### -- CHIME_SVIIvR -- START
+                                    UidPort("P:sir_s_n_exp.in.i_v"),
+                                    UidPort("P:sir_s_n_exp.in.vaccination_rate"),
+                                    ### -- CHIME_SVIIvR -- END
+
                                     UidPort("P:sir_s_n_exp.s_n")],
-                             tree=e2,
+                             tree=sir_s_n_exp_e3,
                              metadata=None)
+
+    ### -- CHIME_SVIIvR -- START
+    # sir_v_n_exp = Expression()
+    ### -- CHIME_SVIIvR -- END
 
     # Expression sir_i_n_exp
     # e3 = (* beta s i) -> e3
