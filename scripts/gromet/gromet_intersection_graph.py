@@ -86,7 +86,7 @@ class Edge:
     Represent paths of dataflow from one CommonNode, OAPNode or
     NOAPNode to another.
     """
-    type: str  # one of: 'equal', 'g1_subset_g2', 'g2_subset_g1', 'no_overlap'
+    type: str  # one of: 'equal', 'g1_subset_g2', 'g2_subset_g1', 'overlap', 'no_overlap'
     src: UidCommonNode
     dst: UidCommonNode
 
