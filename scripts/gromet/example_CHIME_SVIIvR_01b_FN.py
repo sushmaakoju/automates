@@ -3463,7 +3463,7 @@ def generate_gromet() -> Gromet:
 
                         # REMOVE_CHIME_SIR_Base
                         # UidPort("P:sir.gamma"),
-                        
+
                         UidPort("P:sir.s_in"),
                         UidPort("P:sir.i_in"),
                         UidPort("P:sir.r_in"),
