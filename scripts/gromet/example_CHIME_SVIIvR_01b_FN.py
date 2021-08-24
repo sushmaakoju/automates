@@ -1030,6 +1030,25 @@ def generate_gromet() -> Gromet:
              src=UidPort("P:sir_v_exp.out.v"),
              tgt=UidPort("P:sir.out.v")),
 
+        Wire(uid=UidWire("W:sir.in.gamma_vaccinated>sir_r_n_exp.in.gamma_vaccinated"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:sir.in.gamma_vaccinated"),
+             tgt=UidPort("P:sir_r_n_exp.in.gamma_vaccinated")),
+        Wire(uid=UidWire("W:sir.in.i_v>sir_r_n_exp.in.i_v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:sir.in.i_v"),
+             tgt=UidPort("P:sir_r_n_exp.in.i_v")),
+        Wire(uid=UidWire("W:sir.in.gamma_unvaccinated>sir_r_n_exp.in.gamma_unvaccinated"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:sir.in.gamma_unvaccinated"),
+             tgt=UidPort("P:sir_r_n_exp.in.gamma_unvaccinated")),
+
         Wire(uid=UidWire("W:sir_scale_exp.scale>sir_i_v_exp.in.scale"),
              type=None,
              value_type=UidType("Float"),
@@ -2644,6 +2663,26 @@ def generate_gromet() -> Gromet:
              name="i_v_n",
              value=None, metadata=None),
 
+        # sir_i_v_n_exp in
+        Port(uid=UidPort("P:sir_r_n_exp.in.gamma_vaccinated"),
+             box=UidBox("B:sir_r_n_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="gamma_vaccinated",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:sir_r_n_exp.in.i_v"),
+             box=UidBox("B:sir_r_n_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:sir_r_n_exp.in.gamma_unvaccinated"),
+             box=UidBox("B:sir_r_n_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="gamma_unvaccinated",
+             value=None, metadata=None),
+
         # sir_i_n_exp in
         Port(uid=UidPort("P:sir_i_n_exp.i_v"),
              box=UidBox("B:sir_i_n_exp"),
@@ -3761,28 +3800,51 @@ def generate_gromet() -> Gromet:
                              metadata=None)
 
     # Expression sir_r_n_exp
-    # e6 = (* gamma i r) -> e6
-    e6 = Expr(call=RefOp(UidOp('*')),
-              args=[
-                    # TODO
-                    # REMOVE_CHIME_SIR_Base
-                    # UidPort("P:sir_r_n_exp.gamma"),
+    # # e6 = (* gamma i r) -> e6
+    # e6 = Expr(call=RefOp(UidOp('*')),
+    #           args=[
+    #                 # TODO
+    #                 # REMOVE_CHIME_SIR_Base
+    #                 # UidPort("P:sir_r_n_exp.gamma"),
+    #
+    #                 UidPort("P:sir_r_n_exp.i"),
+    #                 UidPort("P:sir_r_n_exp.r")])
+    # # e7 = (+ e6 r) -> e7
+    # e7 = Expr(call=RefOp(UidOp('+')),
+    #           args=[e6, UidPort("P:sir_r_n_exp.r")])
 
-                    UidPort("P:sir_r_n_exp.i"),
-                    UidPort("P:sir_r_n_exp.r")])
-    # e7 = (+ e6 r) -> e7
-    e7 = Expr(call=RefOp(UidOp('+')),
-              args=[e6, UidPort("P:sir_r_n_exp.r")])
+    # sir_r_n_exp_e0 = (* gamma_vaccinated i_v)
+    sir_r_n_exp_e0 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[UidPort("P:sir_r_n_exp.in.gamma_vaccinated"),
+                   UidPort("P:sir_r_n_exp.in.i_v"),])
+    # sir_r_n_exp_e1 = (* gamma_unvaccinated i)
+    sir_r_n_exp_e1 = \
+        Expr(call=RefOp(UidOp('*')),
+             args=[UidPort("P:sir_r_n_exp.in.gamma_unvaccinated"),
+                   UidPort("P:sir_r_n_exp.i"),])
+    # sir_r_n_exp_e2 = (+ sir_r_n_exp_e0 sir_r_n_exp_e1 r)
+    sir_r_n_exp_e2 = \
+        Expr(call=RefOp(UidOp('+')),
+             args=[sir_r_n_exp_e0, sir_r_n_exp_e1, UidPort("P:sir_r_n_exp.r")])
     sir_r_n_exp = Expression(uid=UidBox("B:sir_r_n_exp"),
                              type=None,
                              name=None,
-                             ports=[# REMOVE_CHIME_SIR_Base
-                                    # UidPort("P:sir_r_n_exp.gamma"),
+                             ports=[
+                                 # REMOVE_CHIME_SIR_Base
+                                 # UidPort("P:sir_r_n_exp.gamma"),
 
-                                    UidPort("P:sir_r_n_exp.i"),
-                                    UidPort("P:sir_r_n_exp.r"),
-                                    UidPort("P:sir_r_n_exp.r_n")],
-                             tree=e7,
+                                 UidPort("P:sir_r_n_exp.i"),
+                                 UidPort("P:sir_r_n_exp.r"),
+                                 UidPort("P:sir_r_n_exp.r_n"),
+
+                                 ### -- CHIME_SVIIvR -- START
+                                 UidPort("P:sir_r_n_exp.in.gamma_vaccinated"),
+                                 UidPort("P:sir_r_n_exp.in.i_v"),
+                                 UidPort("P:sir_r_n_exp.in.gamma_unvaccinated"),
+                                 ### -- CHIME_SVIIvR -- END
+                             ],
+                             tree=sir_r_n_exp_e2,
                              metadata=None)
 
     # Expression sir_scale_exp
@@ -3977,6 +4039,10 @@ def generate_gromet() -> Gromet:
                         UidWire("W:sir.in.gamma_vaccinated>sir_i_v_n_exp.in.gamma_vaccinated"),
                         UidWire("W:sir_i_v_n_exp.out.i_v_n>sir_scale_exp.i_v_n"),
                         UidWire("W:sir_i_v_n_exp.out.i_v_n>sir_i_v_exp.in.i_v_n"),
+
+                        UidWire("W:sir.in.gamma_vaccinated>sir_r_n_exp.in.gamma_vaccinated"),
+                        UidWire("W:sir.in.i_v>sir_r_n_exp.in.i_v"),
+                        UidWire("W:sir.in.gamma_unvaccinated>sir_r_n_exp.in.gamma_unvaccinated"),
 
                         UidWire("W:sir_scale_exp.scale>sir_v_exp.in.scale"),
                         UidWire("W:sir_v_exp.out.v>sir.out.v"),
