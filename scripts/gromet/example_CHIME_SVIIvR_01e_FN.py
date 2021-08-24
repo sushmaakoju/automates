@@ -484,6 +484,71 @@ def generate_gromet() -> Gromet:
 
         # -- sim_sir() Wires --
 
+        ### -- CHIME_SVIIvR -- START
+
+        Wire(uid=UidWire("W:simsir.in.v>simsir_n_exp.in.v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.v"),
+             tgt=UidPort("P:simsir_n_exp.in.v")),
+        Wire(uid=UidWire("W:simsir.in.v>simsir_loop_1.in.v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.v"),
+             tgt=UidPort("P:simsir_loop_1.in.v")),
+        Wire(uid=UidWire("W:simsir.in.i_v>simsir_n_exp.in.i_v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.i_v"),
+             tgt=UidPort("P:simsir_n_exp.in.i_v")),
+        Wire(uid=UidWire("W:simsir.in.i_v>simsir_loop_1.in.i_v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.i_v"),
+             tgt=UidPort("P:simsir_loop_1.in.i_v")),
+        Wire(uid=UidWire("W:simsir.in.vaccination_rate>simsir_loop_1.in.vaccination_rate"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.vaccination_rate"),
+             tgt=UidPort("P:simsir_loop_1.in.vaccination_rate")),
+        Wire(uid=UidWire("W:simsir.in.vaccine_efficacy>simsir_loop_1.in.vaccine_efficacy"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.vaccine_efficacy"),
+             tgt=UidPort("P:simsir_loop_1.in.vaccine_efficacy")),
+        Wire(uid=UidWire("W:simsir.in.gamma_unvaccinated>simsir_loop_1.in.gamma_unvaccinated"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.gamma_unvaccinated"),
+             tgt=UidPort("P:simsir_loop_1.in.gamma_unvaccinated")),
+        Wire(uid=UidWire("W:simsir.in.gamma_vaccinated>simsir_loop_1.in.gamma_vaccinated"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:simsir.in.gamma_vaccinated"),
+             tgt=UidPort("P:simsir_loop_1.in.gamma_vaccinated")),
+        Wire(uid=UidWire("W:simsir_loop_1.out.v>simsir.out.v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:simsir_loop_1.out.v"),
+             tgt=UidPort("P:simsir.out.v")),
+        Wire(uid=UidWire("W:simsir_loop_1.out.i_v>simsir.out.i_v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:simsir_loop_1.out.i_v"),
+             tgt=UidPort("P:simsir.out.i_v")),
+
+        ### -- CHIME_SVIIvR -- END
+
         Wire(uid=UidWire("W:simsir.in.N_p>simsir_loop_1_range_init_exp.in.N_p"),
              type=None,
              value_type=UidType("Integer"),
@@ -1935,6 +2000,74 @@ def generate_gromet() -> Gromet:
     ports_simsir = [
 
         # -- sim_sir() Ports --
+
+        ### -- CHIME_SVIIvR -- START
+
+        # simsir in CHIME_SVIIvR
+        Port(uid=UidPort("P:simsir.in.v"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="v",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:simsir.in.i_v"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:simsir.in.vaccination_rate"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="vaccination_rate",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:simsir.in.vaccine_efficacy"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="vaccine_efficacy",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:simsir.in.gamma_unvaccinated"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="gamma_unvaccinated",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:simsir.in.gamma_vaccinated"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="gamma_vaccinated",
+             value=None, metadata=None),
+        # simsir out CHIME_SVIIvR
+        Port(uid=UidPort("P:simsir.out.v"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="v",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:simsir.out.i_v"),
+             box=UidBox("B:simsir"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
+        # simsir_n_exp in
+        Port(uid=UidPort("P:simsir_n_exp.in.v"),
+             box=UidBox("B:simsir_n_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="v",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:simsir_n_exp.in.i_v"),
+             box=UidBox("B:simsir_n_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
+
+        ### -- CHIME_SVIIvR -- END
 
         # simsir in
         Port(uid=UidPort("P:simsir.in.s"),
@@ -3924,7 +4057,12 @@ def generate_gromet() -> Gromet:
         Expr(call=RefOp(UidOp('+')),
              args=[UidPort("P:simsir_n_exp.in.s"),
                    UidPort("P:simsir_n_exp.in.i"),
-                   UidPort("P:simsir_n_exp.in.r")])
+                   UidPort("P:simsir_n_exp.in.r"),
+                   ### -- CHIME_SVIIvR -- START
+                   UidPort("P:simsir_n_exp.in.v"),
+                   UidPort("P:simsir_n_exp.in.i_v"),
+                   ### -- CHIME_SVIIvR -- END
+                   ])
     simsir_n_exp = \
         Expression(uid=UidBox("B:simsir_n_exp"),
                    type=None,
@@ -3932,7 +4070,13 @@ def generate_gromet() -> Gromet:
                    ports=[UidPort("P:simsir_n_exp.in.s"),
                           UidPort("P:simsir_n_exp.in.i"),
                           UidPort("P:simsir_n_exp.in.r"),
-                          UidPort("P:simsir_n_exp.out.n")],
+                          UidPort("P:simsir_n_exp.out.n"),
+
+                          ### -- CHIME_SVIIvR -- START
+                          UidPort("P:simsir_n_exp.in.v"),
+                          UidPort("P:simsir_n_exp.in.i_v"),
+                          ### -- CHIME_SVIIvR -- END
+                          ],
                    tree=simsir_n_exp_e0,
                    metadata=None)
 
@@ -3954,7 +4098,19 @@ def generate_gromet() -> Gromet:
 
                      UidPort("P:simsir.out.s"),
                      UidPort("P:simsir.out.i"),
-                     UidPort("P:simsir.out.r")
+                     UidPort("P:simsir.out.r"),
+
+                     ### -- CHIME_SVIIvR -- START
+                     UidPort("P:simsir.in.v"),
+                     UidPort("P:simsir.in.i_v"),
+                     UidPort("P:simsir.in.vaccination_rate"),
+                     UidPort("P:simsir.in.vaccine_efficacy"),
+                     UidPort("P:simsir.in.gamma_unvaccinated"),
+                     UidPort("P:simsir.in.gamma_vaccinated"),
+
+                     UidPort("P:simsir.out.v"),
+                     UidPort("P:simsir.out.i_v"),
+                     ### -- CHIME_SVIIvR -- END
                  ],
 
                  # contents
@@ -3981,7 +4137,20 @@ def generate_gromet() -> Gromet:
                      UidWire("W:simsir_n_exp.out.n>simsir_loop_1.in.n"),
                      UidWire("W:simsir_loop_1.out.s>simsir.out.s"),
                      UidWire("W:simsir_loop_1.out.i>simsir.out.i"),
-                     UidWire("W:simsir_loop_1.out.r>simsir.out.r")
+                     UidWire("W:simsir_loop_1.out.r>simsir.out.r"),
+
+                     ### -- CHIME_SVIIvR -- START
+                     UidWire("W:simsir.in.v>simsir_n_exp.in.v"),
+                     UidWire("W:simsir.in.v>simsir_loop_1.in.v"),
+                     UidWire("W:simsir.in.i_v>simsir_n_exp.in.i_v"),
+                     UidWire("W:simsir.in.i_v>simsir_loop_1.in.i_v"),
+                     UidWire("W:simsir.in.vaccination_rate>simsir_loop_1.in.vaccination_rate"),
+                     UidWire("W:simsir.in.vaccine_efficacy>simsir_loop_1.in.vaccine_efficacy"),
+                     UidWire("W:simsir.in.gamma_unvaccinated>simsir_loop_1.in.gamma_unvaccinated"),
+                     UidWire("W:simsir.in.gamma_vaccinated>simsir_loop_1.in.gamma_vaccinated"),
+                     UidWire("W:simsir_loop_1.out.v>simsir.out.v"),
+                     UidWire("W:simsir_loop_1.out.i_v>simsir.out.i_v"),
+                     ### -- CHIME_SVIIvR -- END
                  ],
                  boxes=[UidBox("B:simsir_loop_1_range_init_exp"),
                         UidBox("B:simsir_loop_1_get_p_idx_init_exp"),
@@ -4873,7 +5042,7 @@ def generate_gromet() -> Gromet:
     main = \
         Function(uid=UidBox("B:main"),
                  type=None,
-                 name=UidOp("main - SVIIvR 01d"),    # TODO UPDATE
+                 name=UidOp("main - SVIIvR 01e"),    # TODO UPDATE
                  ports=[
                      UidPort("P:main.out.S"),
                      UidPort("P:main.out.I"),
