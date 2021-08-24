@@ -33,24 +33,71 @@ def generate_gromet() -> Gromet:
                 UidVariable("V:n_days"),
                 # N_p                   : UidJunction("J:main.N_p")
                 UidVariable("V:N_p"),
-                # infections_days       : UidJunction("J:main.infections_days")
-                UidVariable("V:infections_days"),
+
+                # Removed from CHIME_SIR_Base
+                # # infections_days       : UidJunction("J:main.infections_days")
+                # UidVariable("V:infections_days"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # infections_days_unvaccinated  :
+                UidVariable("V:infections_days_unvaccinated"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # infections_days_vaccinated    :
+                UidVariable("V:infections_days_vaccinated"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # vaccination_rate              :
+                UidVariable("V:vaccination_rate"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # vaccine_efficacy              :
+                UidVariable("V:vaccine_efficacy"),
+
                 # relative_contact_rate : UidJunction("J:main.relative_contact_rate")
                 UidVariable("V:relative_contact_rate"),
 
                 # initial conditions
                 # s_n                   : UidJunction("J:main.s_n")
                 UidVariable("V:s_n"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # v_n                   :
+                UidVariable("V:v_n"),
+
                 # i_n                   : UidJunction("J:main.i_n")
                 UidVariable("V:i_n"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # i_v_n                 :
+                UidVariable("V:i_v_n"),
+
                 # r_n                   : UidJunction("J:main.r_n")
                 UidVariable("V:r_n"),
 
                 # typical measurements
                 # out S                 : UidPort("P:main.out.S")
                 UidVariable("V:S"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # out V                 :
+                UidVariable("V:V"),
+
                 # out I                 : UidPort("P:main.out.I")
                 UidVariable("V:I"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # out Iv                :
+                UidVariable("V:Iv"),
+
                 # out R                 : UidPort("P:main.out.R")
                 UidVariable("V:R"),
 
@@ -69,8 +116,25 @@ def generate_gromet() -> Gromet:
                 # infections_days       : UidJunction("J:main.infections_days")
                 # UidVariable("V:infections_days"),
 
-                # TODO: add infections_days_unvaccinated
-                # TODO: add infections_days_vaccinated
+                # TODO
+                # CHIME_SVIIvR
+                # infections_days_unvaccinated  :
+                UidVariable("V:infections_days_unvaccinated"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # infections_days_vaccinated    :
+                UidVariable("V:infections_days_vaccinated"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # vaccination_rate              :
+                UidVariable("V:vaccination_rate"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # vaccine_efficacy              :
+                UidVariable("V:vaccine_efficacy"),
 
                 # relative_contact_rate : UidJunction("J:main.relative_contact_rate")
                 UidVariable("V:relative_contact_rate"),
@@ -82,6 +146,16 @@ def generate_gromet() -> Gromet:
                 UidVariable("V:i_n"),
                 # r_n                   : UidJunction("J:main.r_n")
                 UidVariable("V:r_n"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # v_n                   :
+                UidVariable("V:v_n"),
+
+                # TODO
+                # CHIME_SVIIvR
+                # i_v_n                 :
+                UidVariable("V:i_v_n"),
             ]
         )
 
@@ -149,6 +223,26 @@ def generate_gromet() -> Gromet:
     wires_main = [
 
         ### -- CHIME_SVIIvR -- START
+
+        Wire(uid=UidWire("W:main_call_simsir.out.v>main.out.V"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_call_simsir.out.v"),
+             tgt=UidPort("P:main.out.V")),
+        Wire(uid=UidWire("W:main_call_simsir.out.i_v>main.out.Iv"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_call_simsir.out.i_v"),
+             tgt=UidPort("P:main.out.Iv")),
+
+        Wire(uid=UidWire("W:main_call_simsir.out.i_v>main_ever_infected_exp.in.i_v"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("PC:main_call_simsir.out.i_v"),
+             tgt=UidPort("P:main_ever_infected_exp.in.i_v")),
 
         Wire(uid=UidWire("W:main.v_n>main_call_simsir.in.v_n"),
              type=None,
@@ -1460,6 +1554,20 @@ def generate_gromet() -> Gromet:
 
         ### -- CHIME_SVIIvR -- START
 
+        # main out
+        Port(uid=UidPort("P:main.out.V"),
+             box=UidBox("B:main"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Sequence"),
+             name="V",
+             value=None, metadata=None),
+        Port(uid=UidPort("P:main.out.Iv"),
+             box=UidBox("B:main"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Sequence"),
+             name="Iv",
+             value=None, metadata=None),
+
         # main_gamma_unvaccinated_exp in
         Port(uid=UidPort("P:main_gamma_unvaccinated_exp.in.infections_days_unvaccinated"),
              box=UidBox("B:main_gamma_unvaccinated_exp"),
@@ -1556,6 +1664,14 @@ def generate_gromet() -> Gromet:
                  name="i_v",
                  value=None,
                  metadata=None),
+
+        # main_ever_infected_exp in
+        Port(uid=UidPort("P:main_ever_infected_exp.in.i_v"),
+             box=UidBox("B:main_ever_infected_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="i_v",
+             value=None, metadata=None),
 
         ### -- CHIME_SVIIvR -- END
 
@@ -1991,8 +2107,6 @@ def generate_gromet() -> Gromet:
                  name="growth_rate",
                  value=None,
                  metadata=None),
-
-        # TODO add CHIME_SVIIvR gamma_unvaccinated
 
         # REMOVE_CHIME_SIR_Base
         # PortCall(uid=UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma"),
@@ -5352,6 +5466,9 @@ def generate_gromet() -> Gromet:
     main_ever_infected_exp_e0 = \
         Expr(call=RefOp(UidOp('+')),
              args=[UidPort("P:main_ever_infected_exp.in.i"),
+                   ### -- CHIME_SVIIvR -- START
+                   UidPort("P:main_ever_infected_exp.in.i_v"),
+                   ### -- CHIME_SVIIvR -- END
                    UidPort("P:main_ever_infected_exp.in.r")])
     main_ever_infected_exp = \
         Expression(uid=UidBox("B:main_ever_infected_exp"),
@@ -5359,19 +5476,29 @@ def generate_gromet() -> Gromet:
                    name=None,
                    ports=[UidPort("P:main_ever_infected_exp.in.i"),
                           UidPort("P:main_ever_infected_exp.in.r"),
-                          UidPort("P:main_ever_infected_exp.out.E")],
+                          UidPort("P:main_ever_infected_exp.out.E"),
+
+                          ### -- CHIME_SVIIvR -- START
+                          UidPort("P:main_ever_infected_exp.in.i_v"),
+                          ### -- CHIME_SVIIvR -- END
+                          ],
                    tree=main_ever_infected_exp_e0,
                    metadata=None)
 
     main = \
         Function(uid=UidBox("B:main"),
                  type=None,
-                 name=UidOp("main - SVIIvR 01f"),    # TODO UPDATE
+                 name=UidOp("main"),
                  ports=[
                      UidPort("P:main.out.S"),
                      UidPort("P:main.out.I"),
                      UidPort("P:main.out.R"),
-                     UidPort("P:main.out.E")
+                     UidPort("P:main.out.E"),
+
+                     ### -- CHIME_SVIIvR -- START
+                     UidPort("P:main.out.V"),
+                     UidPort("P:main.out.Iv"),
+                     ### -- CHIME_SVIIvR -- END
                  ],
 
                  # contents
@@ -5442,6 +5569,10 @@ def generate_gromet() -> Gromet:
                      UidWire("W:main.vaccine_efficacy>main_call_simsir.in.vaccine_efficacy"),
                      UidWire("W:main_gamma_unvaccinated_exp.out.gamma_unvaccinated>main_call_simsir.in.gamma_unvaccinated"),
                      UidWire("W:main_gamma_vaccinated_exp.out.gamma_vaccinated>main_call_simsir.in.gamma_vaccinated"),
+
+                     UidWire("W:main_call_simsir.out.i_v>main_ever_infected_exp.in.i_v"),
+                     UidWire("W:main_call_simsir.out.i_v>main.out.Iv"),
+                     UidWire("W:main_call_simsir.out.v>main.out.V"),
                      ### -- CHIME_SVIIvR -- END
                  ],
                  boxes=[
