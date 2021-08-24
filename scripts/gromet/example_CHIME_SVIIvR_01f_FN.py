@@ -148,6 +148,29 @@ def generate_gromet() -> Gromet:
 
     wires_main = [
 
+        ### -- CHIME_SVIIvR -- START
+
+        Wire(uid=UidWire("W:main.infections_days_unvaccinated>main_gamma_unvaccinated_exp.in.infections_days_unvaccinated"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidJunction("J:main.infections_days_unvaccinated"),
+             tgt=UidPort("P:main_gamma_unvaccinated_exp.in.infections_days_unvaccinated")),
+        Wire(uid=UidWire("W:main_gamma_unvaccinated_exp.out.gamma_unvaccinated>main_loop_1.in.gamma_unvaccinated"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_gamma_unvaccinated_exp.out.gamma_unvaccinated"),
+             tgt=UidPort("P:main_loop_1.in.gamma_unvaccinated")),
+        Wire(uid=UidWire("W:main.infections_days_vaccinated>main_gamma_vaccinated_exp.in.infections_days_vaccinated"),
+             type=None,
+             value_type=UidType("Sequence"),
+             name=None, value=None, metadata=None,
+             src=UidJunction("J:main.infections_days_vaccinated"),
+             tgt=UidPort("P:main_gamma_vaccinated_exp.in.infections_days_vaccinated")),
+
+        ### -- CHIME_SVIIvR -- END
+
         # main <body>
 
         Wire(uid=UidWire("W:main_call_simsir.out.s_n>main.out.S"),
@@ -310,6 +333,17 @@ def generate_gromet() -> Gromet:
     ]
 
     wires_main_loop_1 = [
+
+        ### -- CHIME_SVIIvR -- START
+
+        Wire(uid=UidWire("W:main_loop_1.in.gamma_unvaccinated>main_loop_1_call_get_beta_exp.in.gamma_unvaccinated"),
+             type=None,
+             value_type=UidType("Float"),
+             name=None, value=None, metadata=None,
+             src=UidPort("P:main_loop_1.in.gamma_unvaccinated"),
+             tgt=UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma_unvaccinated")),
+
+        ### -- CHIME_SVIIvR -- END
 
         Wire(uid=UidWire("W:main_loop_1.in.p_idx>main_loop_1_cond.in.p_idx"),
              type=None,
@@ -1387,6 +1421,40 @@ def generate_gromet() -> Gromet:
 
     ports_main = [
 
+        ### -- CHIME_SVIIvR -- START
+
+        # main_gamma_unvaccinated_exp in
+        Port(uid=UidPort("P:main_gamma_unvaccinated_exp.in.infections_days_unvaccinated"),
+             box=UidBox("B:main_gamma_unvaccinated_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="infections_days_unvaccinated",
+             value=None, metadata=None),
+        # main_gamma_unvaccinated_exp out
+        Port(uid=UidPort("P:main_gamma_unvaccinated_exp.out.gamma_unvaccinated"),
+             box=UidBox("B:main_gamma_unvaccinated_exp"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="gamma_unvaccinated",
+             value=None, metadata=None),
+
+        # main_gamma_vaccinated_exp in
+        Port(uid=UidPort("P:main_gamma_vaccinated_exp.in.infections_days_vaccinated"),
+             box=UidBox("B:main_gamma_vaccinated_exp"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="infections_days_vaccinated",
+             value=None, metadata=None),
+        # main_gamma_vaccinated_exp out
+        Port(uid=UidPort("P:main_gamma_vaccinated_exp.out.gamma_vaccinated"),
+             box=UidBox("B:main_gamma_vaccinated_exp"),
+             type=UidType("PortOutput"),
+             value_type=UidType("Float"),
+             name="gamma_vaccinated",
+             value=None, metadata=None),
+
+        ### -- CHIME_SVIIvR -- END
+
         # main out
         Port(uid=UidPort("P:main.out.S"),
              box=UidBox("B:main"),
@@ -1589,6 +1657,35 @@ def generate_gromet() -> Gromet:
     ]
 
     ports_main_loop_1 = [
+
+        ### -- CHIME_SVIIvR -- START
+        # main_loop_1 in
+        Port(uid=UidPort("P:main_loop_1.in.gamma_unvaccinated"),
+             box=UidBox("B:main_loop_1"),
+             type=UidType("PortInput"),
+             value_type=UidType("Float"),
+             name="gamma_unvaccinated",
+             value=None, metadata=None),
+        # main_loop_1 out
+        PortCall(uid=UidPort("PC:main_loop_1.out.gamma_unvaccinated"),
+                 call=UidPort("P:main_loop_1.in.gamma_unvaccinated"),
+                 box=UidBox("B:main_loop_1"),
+                 type=UidType("PortOutput"),
+                 value_type=UidType("Float"),
+                 name="gamma_unvaccinated",
+                 value=None,
+                 metadata=None),
+
+        # main_loop_1_call_get_beta_exp in
+        PortCall(uid=UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma_unvaccinated"),
+                 call=UidPort("P:get_beta.in.gamma"),
+                 box=UidBox("B:main_loop_1_call_get_beta_exp"),
+                 type=UidType("PortInput"),
+                 value_type=UidType("Float"),
+                 name="gamma_unvaccinated",
+                 value=None,
+                 metadata=None),
+        ### -- CHIME_SVIIvR -- END
 
         # main_loop_1 in
         Port(uid=UidPort("P:main_loop_1.in.s_n"),
@@ -3541,6 +3638,29 @@ def generate_gromet() -> Gromet:
         #          value_type=UidType('Float'),
         #          metadata=None),
 
+        ### -- CHIME_SVIIvR -- START
+
+        Junction(uid=UidJunction("J:main.infections_days_unvaccinated"),
+                 name='infections_days_unvaccinated',
+                 type=None,
+                 value=Literal(uid=None,
+                               type=UidType('Integer'),
+                               value=Val('14'),
+                               name=None, metadata=None),
+                 value_type=UidType('Integer'),
+                 metadata=None),
+        Junction(uid=UidJunction("J:main.infections_days_vaccinated"),
+                 name='infections_days_vaccinated',
+                 type=None,
+                 value=Literal(uid=None,
+                               type=UidType('Integer'),
+                               value=Val('10'),
+                               name=None, metadata=None),
+                 value_type=UidType('Integer'),
+                 metadata=None),
+
+        ### -- CHIME_SVIIvR -- END
+
         Junction(uid=UidJunction("J:main.relative_contact_rate"),
                  name='relative_contact_rate',
                  type=None,
@@ -4687,6 +4807,45 @@ def generate_gromet() -> Gromet:
     #                tree=main_gamma_exp_e0,
     #                metadata=None)
 
+    # TODO HERE
+    ### -- CHIME_SVIIvR -- START
+
+    # main_gamma_unvaccinated_exp CHIME_SVIIvR
+    main_gamma_unvaccinated_exp_e0 = \
+        Expr(call=RefOp(UidOp('/')),
+             args=[Literal(uid=None,
+                           type=UidType('Float'),
+                           value=Val('1.0'),
+                           name=None, metadata=None),
+                   UidPort("P:main_gamma_unvaccinated_exp.in.infections_days_unvaccinated")])
+    main_gamma_unvaccinated_exp = \
+        Expression(uid=UidBox("B:main_gamma_unvaccinated_exp"),
+                   type=None,
+                   name=None,
+                   ports=[UidPort("P:main_gamma_unvaccinated_exp.in.infections_days_unvaccinated"),
+                          UidPort("P:main_gamma_unvaccinated_exp.out.gamma_unvaccinated")],
+                   tree=main_gamma_unvaccinated_exp_e0,
+                   metadata=None)
+
+    # main_gamma_vaccinated_exp CHIME_SVIIvR
+    main_gamma_vaccinated_exp_0 = \
+        Expr(call=RefOp(UidOp('/')),
+             args=[Literal(uid=None,
+                           type=UidType('Float'),
+                           value=Val('1.0'),
+                           name=None, metadata=None),
+                   UidPort("P:main_gamma_vaccinated_exp.in.infections_days_vaccinated")])
+    main_gamma_vaccinated_exp = \
+        Expression(uid=UidBox("B:main_gamma_vaccinated_exp"),
+                   type=None,
+                   name=None,
+                   ports=[UidPort("P:main_gamma_vaccinated_exp.in.infections_days_vaccinated"),
+                          UidPort("P:main_gamma_vaccinated_exp.out.gamma_vaccinated")],
+                   tree=main_gamma_vaccinated_exp_0,
+                   metadata=None)
+
+    ### -- CHIME_SVIIvR -- END
+
     # main_pbetas_seq
     main_pbetas_seq_e0 = \
         Expr(call=RefOp(UidOp('init_seq')),
@@ -4905,6 +5064,10 @@ def generate_gromet() -> Gromet:
                     # REMOVE_CHIME_SIR_Base
                     # UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma"),
 
+                    ### -- CHIME_SVIIvR -- START
+                    UidPort("PC:main_loop_1_call_get_beta_exp.in.gamma_unvaccinated"),
+                    ### -- CHIME_SVIIvR -- END
+
                     UidPort("PC:main_loop_1_call_get_beta_exp.in.s_n"),
                     UidPort("PC:main_loop_1_call_get_beta_exp.in.relative_contact_rate"),
                     UidPort("PC:main_loop_1_call_get_beta_exp.out.beta")
@@ -4979,6 +5142,11 @@ def generate_gromet() -> Gromet:
                  UidPort("PC:main_loop_1.out.policys_betas"),
                  UidPort("PC:main_loop_1.out.policy_days"),
                  UidPort("PC:main_loop_1.out.n_days"),
+
+                 ### -- CHIME_SVIIvR -- START
+                 UidPort("P:main_loop_1.in.gamma_unvaccinated"),
+                 UidPort("PC:main_loop_1.out.gamma_unvaccinated"),
+                 ### -- CHIME_SVIIvR -- END
              ],
 
              exit_condition=UidBox("B:main_loop_1_cond"),
@@ -5009,7 +5177,11 @@ def generate_gromet() -> Gromet:
                  UidWire("W:main_loop_1.in.policy_days>main_loop_1_pdays_exp.in.policy_days"),
                  UidWire("W:main_loop_1.in.p_idx>main_loop_1_pdays_exp.in.p_idx"),
                  UidWire("W:main_loop_1.in.n_days>main_loop_1_pdays_exp.in.n_days"),
-                 UidWire("W:main_loop_1_pdays_exp.out.policy_days>main_loop_1.out.policy_days")
+                 UidWire("W:main_loop_1_pdays_exp.out.policy_days>main_loop_1.out.policy_days"),
+
+                 ### -- CHIME_SVIIvR -- START
+                 UidWire("W:main_loop_1.in.gamma_unvaccinated>main_loop_1_call_get_beta_exp.in.gamma_unvaccinated"),
+                 ### -- CHIME_SVIIvR -- END
              ],
              boxes=[
                  # control
@@ -5060,6 +5232,11 @@ def generate_gromet() -> Gromet:
                      # REMOVE_CHIME_SIR_Base
                      # UidJunction("J:main.infections_days"),
 
+                     ### -- CHIME_SVIIvR -- START
+                     UidJunction("J:main.infections_days_unvaccinated"),
+                     UidJunction("J:main.infections_days_vaccinated"),
+                     ### -- CHIME_SVIIvR -- END
+
                      UidJunction("J:main.relative_contact_rate"),
                      UidJunction("J:main.n_days"),
                      UidJunction("J:main.i_day"),
@@ -5094,10 +5271,23 @@ def generate_gromet() -> Gromet:
 
                      UidWire("W:main_call_simsir.out.s_n>main.out.S"),
                      UidWire("W:main_call_simsir.out.i_n>main.out.I"),
-                     UidWire("W:main_call_simsir.out.r_n>main.out.R")
+                     UidWire("W:main_call_simsir.out.r_n>main.out.R"),
+
+                     ### -- CHIME_SVIIvR -- START
+                     # TODO HERE
+                     UidWire("W:main.infections_days_unvaccinated>main_gamma_unvaccinated_exp.in.infections_days_unvaccinated"),
+                     UidWire("W:main_gamma_unvaccinated_exp.out.gamma_unvaccinated>main_loop_1.in.gamma_unvaccinated"),
+                     UidWire("W:main.infections_days_vaccinated>main_gamma_vaccinated_exp.in.infections_days_vaccinated"),
+                     ### -- CHIME_SVIIvR -- END
                  ],
                  boxes=[
                      # UidBox("B:main_gamma_exp"),
+
+                     ### -- CHIME_SVIIvR -- START
+                     UidBox("B:main_gamma_vaccinated_exp"),
+                     UidBox("B:main_gamma_unvaccinated_exp"),
+                     ### -- CHIME_SVIIvR -- END
+
                      UidBox("B:main_pbetas_seq"),
                      UidBox("B:main_pdays_seq"),
                      UidBox("B:main_loop_1"),
@@ -5116,6 +5306,11 @@ def generate_gromet() -> Gromet:
     boxes = [
         main,
         # REMOVE_CHIME_SIR_Base: main_gamma_exp,
+
+        ### -- CHIME_SVIIvR -- START
+        main_gamma_vaccinated_exp, main_gamma_unvaccinated_exp,
+        ### -- CHIME_SVIIvR -- END
+
         main_pbetas_seq, main_pdays_seq,
         main_loop_1, main_loop_1_cond, main_loop_1_p_idx_exp,
         main_loop_1_dtime_exp, main_loop_1_call_growth_rate_exp,
