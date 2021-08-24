@@ -99,8 +99,12 @@ def insert_variables_into_gromet(gromet, variables, fileout):
 # MODEL = 'SimpleSIR_metadata_gromet_FunctionNetwork.json'
 # MODEL = 'CHIME_SIR_01_gromet_FunctionNetwork.json'
 # MODEL = 'CHIME_SIR_01e_gromet_FunctionNetwork.json'
-MODEL = 'CHIME_SIR_Base_gromet_FunctionNetwork.json'
-MODEL_OUT = 'CHIME_SIR_Base_variables_gromet_FunctionNetwork.json'
+
+# MODEL = 'CHIME_SIR_Base_gromet_FunctionNetwork.json'
+# MODEL_OUT = 'CHIME_SIR_Base_variables_gromet_FunctionNetwork.json'
+
+MODEL = 'CHIME_SVIIvR_gromet_FunctionNetwork.json'
+MODEL_OUT = 'CHIME_SVIIvR_variables_gromet_FunctionNetwork.json'
 
 if __name__ == '__main__':
     gromet = load_gromet(MODEL)
