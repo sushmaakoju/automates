@@ -177,9 +177,9 @@ def run(args):
     grfn_vars = grfn_dict["variables"]
     updated_gromet_dict = add_metadata_to_gromet_variables(grfn_vars, gromet_dict)
 
-    new_gromet_file = (
-        f"{args.gromet_file.split('--GroMEt.json')[0]}-with-metadata--GroMEt.json"
-    )
+    with_json_removed = f"{args.gromet_file.split('.json')[0]}"
+    with_gromet_removed = f"{with_json_removed.split('--GroMEt')[0]}"
+    new_gromet_file = f"{with_gromet_removed}-with-metadata--GroMEt.json"
     write_json_dict_to_file(updated_gromet_dict, new_gromet_file)
 
 
