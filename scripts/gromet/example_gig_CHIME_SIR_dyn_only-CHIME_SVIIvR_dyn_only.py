@@ -7,7 +7,7 @@ import gromet_intersection_graph as ig
 
 
 def generate_gig() -> ig.GrometIntersectionGraph:
-    chime_sir_name = "CHIME_SIR"
+    chime_sir_name = "CHIME_SIR_Base"
     chime_sviivr_name = "CHIME_SVIIvR"
     ver_chime_sir_name = f"{chime_sir_name}_v01"
     ver_chime_sviivr_name = f"{chime_sviivr_name}_v01"
@@ -18,80 +18,74 @@ def generate_gig() -> ig.GrometIntersectionGraph:
         ig.CommonNode(
             uid=ig.UidCommonNode("S_in"),
             # type='input',
-            g1_variable=[ig.UidVariable("V:sir.s_in")],
-            g2_variable=[ig.UidVariable("V:sir.s_in")],
+            g1_variable=[ig.UidVariable("V:s_6")],
+            g2_variable=[ig.UidVariable("V:s_6")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("I_in"),
             # type='input',
-            g1_variable=[ig.UidVariable("V:sir.i_in")],
-            g2_variable=[ig.UidVariable("V:sir.i_in")],
+            g1_variable=[ig.UidVariable("V:i_6")],
+            g2_variable=[ig.UidVariable("V:i_6")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("R_in"),
             # type='input',
-            g1_variable=[ig.UidVariable("V:sir.r_in")],
-            g2_variable=[ig.UidVariable("V:sir.r_in")],
+            g1_variable=[ig.UidVariable("V:r_7")],
+            g2_variable=[ig.UidVariable("V:r_7")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("beta"),
             # type='input',
-            g1_variable=[ig.UidVariable("V:sir.beta")],
-            g2_variable=[ig.UidVariable("V:sir.beta")],
-        ),
-        ig.CommonNode(
-            uid=ig.UidCommonNode("gamma"),
-            # type='input',
-            g1_variable=[ig.UidVariable("V:sir.gamma")],
-            g2_variable=[ig.UidVariable("V:sir.gamma")],
+            g1_variable=[ig.UidVariable("V:beta_4")],
+            g2_variable=[ig.UidVariable("V:beta_4")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("n"),
             # type='input',
-            g1_variable=[ig.UidVariable("V:sir.n")],
-            g2_variable=[ig.UidVariable("V:sir.n")],
+            g1_variable=[ig.UidVariable("V:n_2")],
+            g2_variable=[ig.UidVariable("V:n_2")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("scale"),
             # type='internal',
-            g1_variable=[ig.UidVariable("V:sir.scale")],
-            g2_variable=[ig.UidVariable("V:sir.scale")],
+            g1_variable=[ig.UidVariable("V:scale")],
+            g2_variable=[ig.UidVariable("V:scale")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("S_n"),
             # type='internal',
-            g1_variable=[ig.UidVariable("V:sir.s_n")],
-            g2_variable=[ig.UidVariable("V:sir.s_n")],
+            g1_variable=[ig.UidVariable("V:s_n_2")],
+            g2_variable=[ig.UidVariable("V:s_n_2")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("I_n"),
             # type='internal',
-            g1_variable=[ig.UidVariable("V:sir.i_n")],
-            g2_variable=[ig.UidVariable("V:sir.i_n")],
+            g1_variable=[ig.UidVariable("V:i_n_1")],
+            g2_variable=[ig.UidVariable("V:i_n_1")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("R_n"),
             # type='internal',
-            g1_variable=[ig.UidVariable("V:sir.r_n")],
-            g2_variable=[ig.UidVariable("V:sir.r_n")],
+            g1_variable=[ig.UidVariable("V:r_n_1")],
+            g2_variable=[ig.UidVariable("V:r_n_1")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("S_out"),
             # type='output',
-            g1_variable=[ig.UidVariable("V:sir.s_out")],
-            g2_variable=[ig.UidVariable("V:sir.s_out")],
+            g1_variable=[ig.UidVariable("V:s_7")],
+            g2_variable=[ig.UidVariable("V:s_7")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("I_out"),
             # type='output',
-            g1_variable=[ig.UidVariable("V:sir.i_out")],
-            g2_variable=[ig.UidVariable("V:sir.i_out")],
+            g1_variable=[ig.UidVariable("V:i_7")],
+            g2_variable=[ig.UidVariable("V:i_7")],
         ),
         ig.CommonNode(
             uid=ig.UidCommonNode("R_out"),
             # type='output',
-            g1_variable=[ig.UidVariable("V:sir.r_out")],
-            g2_variable=[ig.UidVariable("V:sir.r_out")],
+            g1_variable=[ig.UidVariable("V:r_8")],
+            g2_variable=[ig.UidVariable("V:r_8")],
         ),
     ]
 
@@ -100,28 +94,37 @@ def generate_gig() -> ig.GrometIntersectionGraph:
     noap_nodes = [
         ig.NOAPNode(
             uid=ig.UidCommonNode("NOAP_1"),
-            gromet_name=ver_chime_sviivr_name,
+            gromet_name=ver_chime_sir_name,
             variables=[
-                ig.UidVariable("V:sir.v_r"),
-                ig.UidVariable("V:sir.v_s"),
-                ig.UidVariable("V:sir.v"),
-                ig.UidVariable("V:sir.i_v"),
+                ig.UidVariable("V:gamma_6"),
             ],
         ),
         ig.NOAPNode(
             uid=ig.UidCommonNode("NOAP_2"),
             gromet_name=ver_chime_sviivr_name,
             variables=[
-                ig.UidVariable("V:sir.v_n"),
-                ig.UidVariable("V:sir.i_v_n"),
+                ig.UidVariable("V:vaccination_rate_4"),
+                ig.UidVariable("V:vaccination_efficacy"),
+                ig.UidVariable("V:v_6"),
+                ig.UidVariable("V:i_v_6"),
+                ig.UidVariable("V:gamma_vaccinated_4"),
+                ig.UidVariable("V:gamma_unvaccinated_5"),
             ],
         ),
         ig.NOAPNode(
             uid=ig.UidCommonNode("NOAP_3"),
             gromet_name=ver_chime_sviivr_name,
             variables=[
-                ig.UidVariable("V:sir.v"),
-                ig.UidVariable("V:sir.i_v"),
+                ig.UidVariable("V:v_n_1"),
+                ig.UidVariable("V:i_v_n_1"),
+            ],
+        ),
+        ig.NOAPNode(
+            uid=ig.UidCommonNode("NOAP_4"),
+            gromet_name=ver_chime_sviivr_name,
+            variables=[
+                ig.UidVariable("V:v_7"),
+                ig.UidVariable("V:i_v_7"),
             ],
         ),
     ]
@@ -155,7 +158,7 @@ def generate_gig() -> ig.GrometIntersectionGraph:
         ig.Edge(
             type="no_overlap",
             src=ig.UidCommonNode("S_in"),
-            dst=ig.UidCommonNode("NOAP_2"),
+            dst=ig.UidCommonNode("NOAP_3"),
         ),
         ig.Edge(
             type="g1_subset_g2",
@@ -175,7 +178,7 @@ def generate_gig() -> ig.GrometIntersectionGraph:
         ig.Edge(
             type="no_overlap",
             src=ig.UidCommonNode("I_in"),
-            dst=ig.UidCommonNode("NOAP_2"),
+            dst=ig.UidCommonNode("NOAP_3"),
         ),
         ig.Edge(
             type="g1_subset_g2",
@@ -183,38 +186,33 @@ def generate_gig() -> ig.GrometIntersectionGraph:
             dst=ig.UidCommonNode("R_n"),
         ),
         ig.Edge(
-            type="g1_subset_g2",
-            src=ig.UidCommonNode("gamma"),
+            type="no_overlap",
+            src=ig.UidCommonNode("NOAP_1"),
             dst=ig.UidCommonNode("I_n"),
         ),
         ig.Edge(
-            type="g1_subset_g2",
-            src=ig.UidCommonNode("gamma"),
+            type="no_overlap",
+            src=ig.UidCommonNode("NOAP_1"),
             dst=ig.UidCommonNode("R_n"),
         ),
         ig.Edge(
             type="no_overlap",
-            src=ig.UidCommonNode("gamma"),
-            dst=ig.UidCommonNode("NOAP_2"),
+            src=ig.UidCommonNode("NOAP_2"),
+            dst=ig.UidCommonNode("NOAP_3"),
         ),
         ig.Edge(
             type="no_overlap",
-            src=ig.UidCommonNode("NOAP_1"),
-            dst=ig.UidCommonNode("NOAP_2"),
-        ),
-        ig.Edge(
-            type="no_overlap",
-            src=ig.UidCommonNode("NOAP_1"),
+            src=ig.UidCommonNode("NOAP_2"),
             dst=ig.UidCommonNode("S_n"),
         ),
         ig.Edge(
             type="no_overlap",
-            src=ig.UidCommonNode("NOAP_1"),
+            src=ig.UidCommonNode("NOAP_2"),
             dst=ig.UidCommonNode("I_n"),
         ),
         ig.Edge(
             type="no_overlap",
-            src=ig.UidCommonNode("NOAP_1"),
+            src=ig.UidCommonNode("NOAP_2"),
             dst=ig.UidCommonNode("R_n"),
         ),
         ig.Edge(
@@ -235,7 +233,7 @@ def generate_gig() -> ig.GrometIntersectionGraph:
         ig.Edge(
             type="no_overlap",
             src=ig.UidCommonNode("scale"),
-            dst=ig.UidCommonNode("NOAP_3"),
+            dst=ig.UidCommonNode("NOAP_4"),
         ),
         ig.Edge(
             type="equal",
@@ -254,8 +252,8 @@ def generate_gig() -> ig.GrometIntersectionGraph:
         ),
         ig.Edge(
             type="no_overlap",
-            src=ig.UidCommonNode("NOAP_2"),
-            dst=ig.UidCommonNode("NOAP_3"),
+            src=ig.UidCommonNode("NOAP_3"),
+            dst=ig.UidCommonNode("NOAP_4"),
         ),
     ]
 
