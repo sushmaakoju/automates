@@ -8,14 +8,16 @@ import copy
 def generate_gromet_with_var_objects(gromet_dict):
     new_gromet_dict = copy.deepcopy(gromet_dict)
     variables_extracted = collect_variables(gromet_dict)
-    new_gromet_dict["variables"] = variables_extracted
+    existing_var_uids = {v["uid"] for v in gromet_dict["variables"]}
+    for var in variables_extracted:
+        if var["uid"] not in existing_var_uids:
+            new_gromet_dict["variables"].append(var)
     return new_gromet_dict
 
 
 def run(args):
     gromet_file = args.gromet_file
 
-    gromet = None
     with open(gromet_file) as f:
         gromet_dict = json.load(f)
 
