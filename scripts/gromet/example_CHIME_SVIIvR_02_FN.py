@@ -38,24 +38,20 @@ def generate_gromet() -> Gromet:
                 # # infections_days       : UidJunction("J:main.infections_days")
                 # UidVariable("V:infections_days"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # infections_days_unvaccinated  :
+                # infections_days_unvaccinated  : UidJunction("J:main.infections_days_unvaccinated")
                 UidVariable("V:infections_days_unvaccinated"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # infections_days_vaccinated    :
+                # infections_days_vaccinated    : UidJunction("J:main.infections_days_vaccinated")
                 UidVariable("V:infections_days_vaccinated"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # vaccination_rate              :
+                # vaccination_rate              : UidJunction("J:main.vaccination_rate")
                 UidVariable("V:vaccination_rate"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # vaccine_efficacy              :
+                # vaccine_efficacy              : UidJunction("J:main.vaccine_efficacy")
                 UidVariable("V:vaccine_efficacy"),
 
                 # relative_contact_rate : UidJunction("J:main.relative_contact_rate")
@@ -65,17 +61,15 @@ def generate_gromet() -> Gromet:
                 # s_n                   : UidJunction("J:main.s_n")
                 UidVariable("V:s_n"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # v_n                   :
+                # v_n                   : UidJuncxtion("J:main.v_n")
                 UidVariable("V:v_n"),
 
                 # i_n                   : UidJunction("J:main.i_n")
                 UidVariable("V:i_n"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # i_v_n                 :
+                # i_v_n                 : UidJunction("J:main.i_v_n")
                 UidVariable("V:i_v_n"),
 
                 # r_n                   : UidJunction("J:main.r_n")
@@ -85,17 +79,15 @@ def generate_gromet() -> Gromet:
                 # out S                 : UidPort("P:main.out.S")
                 UidVariable("V:S"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # out V                 :
+                # out V                 : UidPort("P:main.out.V")
                 UidVariable("V:V"),
 
                 # out I                 : UidPort("P:main.out.I")
                 UidVariable("V:I"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # out Iv                :
+                # out Iv                : UidPort("P:main.out.Iv")
                 UidVariable("V:Iv"),
 
                 # out R                 : UidPort("P:main.out.R")
@@ -116,24 +108,20 @@ def generate_gromet() -> Gromet:
                 # infections_days       : UidJunction("J:main.infections_days")
                 # UidVariable("V:infections_days"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # infections_days_unvaccinated  :
+                # infections_days_unvaccinated  : UidJunction("J:main.infections_days_unvaccinated")
                 UidVariable("V:infections_days_unvaccinated"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # infections_days_vaccinated    :
+                # infections_days_vaccinated    : UidJunction("J:main.infections_days_vaccinated")
                 UidVariable("V:infections_days_vaccinated"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # vaccination_rate              :
+                # vaccination_rate              : UidJunction("J:main.vaccination_rate")
                 UidVariable("V:vaccination_rate"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # vaccine_efficacy              :
+                # vaccine_efficacy              : UidJunction("J:main.vaccine_efficacy")
                 UidVariable("V:vaccine_efficacy"),
 
                 # relative_contact_rate : UidJunction("J:main.relative_contact_rate")
@@ -147,14 +135,12 @@ def generate_gromet() -> Gromet:
                 # r_n                   : UidJunction("J:main.r_n")
                 UidVariable("V:r_n"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # v_n                   :
+                # v_n                   : UidJuncxtion("J:main.v_n")
                 UidVariable("V:v_n"),
 
-                # TODO
                 # CHIME_SVIIvR
-                # i_v_n                 :
+                # i_v_n                 : UidJunction("J:main.i_v_n")
                 UidVariable("V:i_v_n"),
             ]
         )

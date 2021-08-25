@@ -191,6 +191,79 @@ def generate_gromet() -> Gromet:
                                                           timestamp=get_current_datetime()),
                                     documents=[chime_webdocs_as_pdf])
 
+    # -- Equation definition metadata
+
+    # ---------------
+    # sir_s_n_exp
+    eqn_extraction_sir_s_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=0,
+                           equation_source_latex="S \\leftarrow S - \\beta S I - \\beta S I_v - v_r S",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="S \leftarrow S - \beta S I - \beta S I_v - v_r S "><mrow><mi>S</mi><mo>←</mo><mi>S</mi><mo>-</mo><mi>β</mi><mi>S</mi><mi>I</mi><mo>-</mo><mi>β</mi><mi>S</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub><mo>-</mo><msub><mrow><mi>v</mi></mrow><mrow><mi>r</mi></mrow></msub><mi>S</mi></mrow></math>')
+    # referenced on line 4647
+    eqn_def_sir_s_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_s_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_s_n_exp)
+
+    # ---------------
+    # sir_v_n_exp
+    eqn_extraction_sir_v_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=1,
+                           equation_source_latex="V \\leftarrow V + v_r S - \\beta(1 - v_e) V I - \\beta(1 - v_e) V I_v",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="V \leftarrow V + v_r S - \beta(1 - v_e) V I - \beta(1 - v_e) V I_v "><mrow><mi>V</mi><mo>←</mo><mi>V</mi><mo>+</mo><msub><mrow><mi>v</mi></mrow><mrow><mi>r</mi></mrow></msub><mi>S</mi><mo>-</mo><mi>β</mi><mo maxsize="1">(</mo><mn>1</mn><mo>-</mo><msub><mrow><mi>v</mi></mrow><mrow><mi>e</mi></mrow></msub><mo maxsize="1">)</mo><mi>V</mi><mi>I</mi><mo>-</mo><mi>β</mi><mo maxsize="1">(</mo><mn>1</mn><mo>-</mo><msub><mrow><mi>v</mi></mrow><mrow><mi>e</mi></mrow></msub><mo maxsize="1">)</mo><mi>V</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub></mrow></math>')
+    # referenced on line 4701
+    eqn_def_sir_v_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_v_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_v_n_exp)
+
+    # ---------------
+    # sir_i_n_exp
+    eqn_extraction_sir_i_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=2,
+                           equation_source_latex="I \\leftarrow I + \\beta S I + \\beta S I_v - \\gamma I",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="I \leftarrow I + \beta S I + \beta S I_v - \gamma I "><mrow><mi>I</mi><mo>←</mo><mi>I</mi><mo>+</mo><mi>β</mi><mi>S</mi><mi>I</mi><mo>+</mo><mi>β</mi><mi>S</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub><mo>-</mo><mi>γ</mi><mi>I</mi></mrow></math>')
+    # referenced on line 4809
+    eqn_def_sir_i_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_i_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_i_n_exp)
+
+    # ---------------
+    # sir_i_v_n_exp
+    eqn_extraction_sir_i_v_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=3,
+                           equation_source_latex="I_v \\leftarrow I_v + \\beta (1 - v_e) V I + \\beta (1 - v_e) V I_v - \\gamma I_v",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="I_v \leftarrow I_v + \beta (1 - v_e) V I + \beta (1 - v_e) V I_v - \gamma I_v "><mrow><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub><mo>←</mo><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub><mo>+</mo><mi>β</mi><mo maxsize="1">(</mo><mn>1</mn><mo>-</mo><msub><mrow><mi>v</mi></mrow><mrow><mi>e</mi></mrow></msub><mo maxsize="1">)</mo><mi>V</mi><mi>I</mi><mo>+</mo><mi>β</mi><mo maxsize="1">(</mo><mn>1</mn><mo>-</mo><msub><mrow><mi>v</mi></mrow><mrow><mi>e</mi></mrow></msub><mo maxsize="1">)</mo><mi>V</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub><mo>-</mo><mi>γ</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub></mrow></math>')
+    # referenced on line 4748
+    eqn_def_sir_i_v_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_i_v_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_i_v_n_exp)
+
+    # ---------------
+    # sir_r_n_exp
+    eqn_extraction_sir_r_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=4,
+                           equation_source_latex="R \\leftarrow R + \\gamma I_v + \\gamma I",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="R \leftarrow R + \gamma I_v + \gamma I "><mrow><mi>R</mi><mo>←</mo><mi>R</mi><mo>+</mo><mi>γ</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>v</mi></mrow></msub><mo>+</mo><mi>γ</mi><mi>I</mi></mrow></math>')
+    # referenced on line 4857
+    eqn_def_sir_r_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_r_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_r_n_exp)
+
+
     # ----- Model component definitions -----
 
     variables_sir = [
@@ -4571,7 +4644,7 @@ def generate_gromet() -> Gromet:
 
                                     UidPort("P:sir_s_n_exp.s_n")],
                              tree=sir_s_n_exp_e3,
-                             metadata=None)
+                             metadata=[eqn_def_sir_s_n_exp])
 
     ### -- CHIME_SVIIvR -- START
 
@@ -4625,7 +4698,7 @@ def generate_gromet() -> Gromet:
                           UidPort("P:sir_v_n_exp.in.i_v"),
                           UidPort("P:sir_v_n_exp.out.v_n")],
                    tree=sir_v_n_exp_4,
-                   metadata=None)
+                   metadata=[eqn_def_sir_v_n_exp])
 
     # -- sir_i_v_n_exp
     # sir_i_v_n_exp_0 = (- 1 vaccine_efficacy)
@@ -4672,7 +4745,7 @@ def generate_gromet() -> Gromet:
                           UidPort("P:sir_i_v_n_exp.in.gamma_vaccinated"),
                           UidPort("P:sir_i_v_n_exp.out.i_v_n")],
                    tree=sir_i_v_n_exp_4,
-                   metadata=None)
+                   metadata=[eqn_def_sir_i_v_n_exp])
 
     ### -- CHIME_SVIIvR -- END
 
@@ -4733,7 +4806,7 @@ def generate_gromet() -> Gromet:
 
                                     UidPort("P:sir_i_n_exp.i_n")],
                              tree=sir_i_n_exp_e3,
-                             metadata=None)
+                             metadata=[eqn_def_sir_i_n_exp])
 
     # Expression sir_r_n_exp
     # # e6 = (* gamma i r) -> e6
@@ -4781,7 +4854,7 @@ def generate_gromet() -> Gromet:
                                  ### -- CHIME_SVIIvR -- END
                              ],
                              tree=sir_r_n_exp_e2,
-                             metadata=None)
+                             metadata=[eqn_def_sir_r_n_exp])
 
     # Expression sir_scale_exp
     # e8 = (+ s_n i_n r_n) -> e8
