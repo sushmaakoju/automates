@@ -134,12 +134,12 @@ def check_gromet_var_grfn_var_match(gromet, grfn_var_id_map):
                     for grfn_var_id in grfn_var_id_map.keys():
                         (
                             _,
-                            grfn_ns,
+                            _,
                             grfn_scope,
                             grfn_name,
                             grfn_ver,
                         ) = grfn_var_id.split("::")
-                        grfn_scope_without_namespace = grfn_scope[len(f"{grfn_ns}.") :]
+                        grfn_scope_without_namespace = grfn_scope.split(".", 1)[1]
 
                         if (
                             gromet_scope_corrected.lower()
@@ -148,8 +148,6 @@ def check_gromet_var_grfn_var_match(gromet, grfn_var_id_map):
                             and gromet_ver_corrected == int(grfn_ver)
                         ):
                             # print(f"Match! {var_obj['uid']},{grfn_var_id}")
-                            if len(grfn_var_id_map[grfn_var_id]["metadata"]) == 0:
-                                print("     no metadata")
                             var_obj["metadata"] = grfn_var_id_map[grfn_var_id][
                                 "metadata"
                             ]
@@ -179,9 +177,9 @@ def run(args):
     grfn_vars = grfn_dict["variables"]
     updated_gromet_dict = add_metadata_to_gromet_variables(grfn_vars, gromet_dict)
 
-    new_gromet_file = (
-        f"{args.gromet_file.split('--GroMEt.json')[0]}-with-metadata--GroMEt.json"
-    )
+    with_json_removed = f"{args.gromet_file.split('.json')[0]}"
+    with_gromet_removed = f"{with_json_removed.split('--GroMEt')[0]}"
+    new_gromet_file = f"{with_gromet_removed}-with-metadata--GroMEt.json"
     write_json_dict_to_file(updated_gromet_dict, new_gromet_file)
 
 
