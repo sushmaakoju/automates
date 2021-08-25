@@ -123,6 +123,44 @@ def generate_gromet() -> Gromet:
                                                           timestamp=get_current_datetime()),
                                     documents=[chime_webdocs_as_pdf])
 
+    # -- Equation definition metadata
+
+    eqn_extraction_sir_s_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=0,
+                           equation_source_latex="S_{t+1} = S_t - \\beta S_t I_t",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="S_{t+1} = S_t - \beta S_t I_t "><mrow><msub><mrow><mi>S</mi></mrow><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mrow><mi>S</mi></mrow><mrow><mi>t</mi></mrow></msub><mo>-</mo><mi>β</mi><msub><mrow><mi>S</mi></mrow><mrow><mi>t</mi></mrow></msub><msub><mrow><mi>I</mi></mrow><mrow><mi>t</mi></mrow></msub></mrow></math>')
+    # referenced on line 3112
+    eqn_def_sir_s_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_s_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_s_n_exp)
+
+    eqn_extraction_sir_i_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=1,
+                           equation_source_latex="I_{t+1} = I_{t} + \\beta S_{t} I_{t} - \\gamma I_{t}",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="I_{t+1} = I_{t} + \beta S_{t} I_{t} - \gamma I_{t} "><mrow><msub><mrow><mi>I</mi></mrow><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mrow><mi>I</mi></mrow><mrow><mi>t</mi></mrow></msub><mo>+</mo><mi>β</mi><msub><mrow><mi>S</mi></mrow><mrow><mi>t</mi></mrow></msub><msub><mrow><mi>I</mi></mrow><mrow><mi>t</mi></mrow></msub><mo>-</mo><mi>γ</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>t</mi></mrow></msub></mrow></math>')
+    # referenced on line 3139
+    eqn_def_sir_i_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_i_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_i_n_exp)
+
+    eqn_extraction_sir_r_n_exp = \
+        EquationExtraction(document_reference_uid=UidDocumentReference("chime_webdocs_as_pdf"),
+                           equation_number=2,
+                           equation_source_latex="R_{t+1} = R_{t} + \\gamma I_{t}",
+                           equation_source_mml='<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" title="R_{t+1} = R_{t} + \gamma I_{t} "><mrow><msub><mrow><mi>R</mi></mrow><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mrow><mi>R</mi></mrow><mrow><mi>t</mi></mrow></msub><mo>+</mo><mi>γ</mi><msub><mrow><mi>I</mi></mrow><mrow><mi>t</mi></mrow></msub></mrow></math>')
+    # referenced on line 3159
+    eqn_def_sir_r_n_exp = \
+        EquationDefinition(uid=UidMetadatum("eqn_def_sir_r_n_exp"),
+                           provenance=Provenance(method=MetadatumMethod('Manual_claytonm@az'),
+                                                 timestamp=get_current_datetime()),
+                           equation_extraction=eqn_extraction_sir_r_n_exp)
+
     # ----- Model component definitions -----
 
     variables_sir = [
@@ -3073,7 +3111,7 @@ def generate_gromet() -> Gromet:
                                     UidPort("P:sir_s_n_exp.i"),
                                     UidPort("P:sir_s_n_exp.s_n")],
                              tree=e2,
-                             metadata=None)
+                             metadata=[eqn_def_sir_s_n_exp])
 
     # Expression sir_i_n_exp
     # e3 = (* beta s i) -> e3
@@ -3099,7 +3137,7 @@ def generate_gromet() -> Gromet:
                                     UidPort("P:sir_i_n_exp.gamma"),
                                     UidPort("P:sir_i_n_exp.i_n")],
                              tree=e5,
-                             metadata=None)
+                             metadata=[eqn_def_sir_i_n_exp])
 
     # Expression sir_r_n_exp
     # e6 = (* gamma i r) -> e6
@@ -3118,7 +3156,7 @@ def generate_gromet() -> Gromet:
                                     UidPort("P:sir_r_n_exp.r"),
                                     UidPort("P:sir_r_n_exp.r_n")],
                              tree=e7,
-                             metadata=None)
+                             metadata=[eqn_def_sir_r_n_exp])
 
     # Expression sir_scale_exp
     # e8 = (+ s_n i_n r_n) -> e8
