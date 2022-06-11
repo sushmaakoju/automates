@@ -1,13 +1,11 @@
 """ setuptools-based setup module. """
 
 import os
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 import re
 import sys
 import platform
 from subprocess import check_call, check_output
-
-from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 from distutils.version import LooseVersion
 
@@ -51,15 +49,16 @@ setup(
     zip_safe=False,
     install_requires=[
         "antlr4-python3-runtime==4.8",
+        "dill==0.3.4",
         "Flask==1.1.1",
         "flask_codemirror==1.1",
         "flask_wtf==0.14.3",
         "future==0.18.2",
         "matplotlib==3.3.4",
         "networkx==2.5",
-        "nltk==3.4.5",
-        "notebook==6.1.5",
-        "numpy==1.20.0",
+        "nltk==3.6.6",
+        "notebook==6.4.10",
+        "numpy==1.21",
         "pandas==1.2.2",
         "plotly==4.5.4",
         "pygraphviz==1.7",
@@ -82,6 +81,8 @@ setup(
         "webcolors",
         "lxml",
         "Pillow",
+        "ftfy",
+        "fastparquet"
     ],
     extras_require=EXTRAS_REQUIRE,
     python_requires=">=3.8",

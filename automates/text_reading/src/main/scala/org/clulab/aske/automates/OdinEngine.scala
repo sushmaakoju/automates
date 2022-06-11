@@ -4,29 +4,25 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValueFactory
 import org.clulab.odin.{ExtractorEngine, Mention, State}
-import org.clulab.processors.{Document, Processor, Sentence}
+import org.clulab.processors.{Document, Processor}
 import org.clulab.processors.fastnlp.FastNLPProcessor
-import org.clulab.aske.automates.entities.{EntityFinder, GazetteerEntityFinder, GrobidEntityFinder, RuleBasedEntityFinder, StringMatchEntityFinder}
-import org.clulab.sequences.LexiconNER
+import org.clulab.aske.automates.entities.{EntityFinder,StringMatchEntityFinder}
 import org.clulab.utils.{DocumentFilter, FileUtils, FilterByLength, PassThroughFilter}
 import org.slf4j.LoggerFactory
 import ai.lum.common.ConfigUtils._
-import org.clulab.aske.automates.actions.ExpansionHandler
-import org.clulab.aske.automates.data.{EdgeCaseParagraphPreprocessor, PassThroughPreprocessor, Preprocessor}
-
-import scala.io.Source
+import org.clulab.aske.automates.data.{EdgeCaseParagraphPreprocessor, LightPreprocessor, PassThroughPreprocessor, Preprocessor}
 
 
 class OdinEngine(
-  val proc: Processor,
-  masterRulesPath: String,
-  taxonomyPath: String,
-  var entityFinders: Seq[EntityFinder],
-  enableExpansion: Boolean,
-  validArgs: List[String],
-  freqWords: Array[String],
-  filterType: Option[String],
-  enablePreprocessor: Boolean) {
+                  val proc: Processor,
+                  masterRulesPath: String,
+                  taxonomyPath: String,
+                  var entityFinders: Seq[EntityFinder],
+                  enableExpansion: Boolean,
+                  validArgs: List[String],
+                  freqWords: Array[String],
+                  filterType: Option[String],
+                  preprocessorType: String) {
 
   val documentFilter: DocumentFilter = filterType match {
     case None => PassThroughFilter()
@@ -34,9 +30,10 @@ class OdinEngine(
     case _ => throw new NotImplementedError(s"Invalid DocumentFilter type specified: $filterType")
   }
 
-  val edgeCaseFilter: Preprocessor = enablePreprocessor match {
-    case false => PassThroughPreprocessor()
-    case true => EdgeCaseParagraphPreprocessor()
+  val edgeCaseFilter: Preprocessor = preprocessorType match {
+    case "Light" => LightPreprocessor()
+    case "EdgeCase" => EdgeCaseParagraphPreprocessor()
+    case "PassThrough" => PassThroughPreprocessor()
   }
 
   class LoadableAttributes(
@@ -61,6 +58,7 @@ class OdinEngine(
   }
 
   var loadableAttributes = LoadableAttributes()
+  val actions = loadableAttributes.actions
 
   // These public variables are accessed directly by clients which
   // don't know they are loadable and which had better not keep copies.
@@ -83,12 +81,33 @@ class OdinEngine(
     // println(s"In extractFrom() -- res : ${initialState.allMentions.map(m => m.text).mkString(",\t")}")
 
     // Run the main extraction engine, pre-populated with the initial state
-    val events =  engine.extractFrom(doc, initialState).toVector
-    //println(s"In extractFrom() -- res : ${res.map(m => m.text).mkString(",\t")}")
-    val (definitionMentions, other) = events.partition(_.label.contains("Definition"))
+    val events = actions.processCommands(engine.extractFrom(doc, initialState).toVector)
+    val (paramSettings, nonParamSettings) = events.partition(_.label.contains("ParameterSetting")) // `paramSettings` includes interval param setting
+    val noOverlapParamSettings = actions.intervalParamSettTakesPrecedence(paramSettings)
+    val paramSettingsAndOthers = noOverlapParamSettings ++ nonParamSettings
+    val newModelParams1 = actions.paramSettingVarToModelParam(paramSettingsAndOthers)
+    val modelCorefResolve = actions.resolveModelCoref(paramSettingsAndOthers)
 
-    val untangled = loadableAttributes.actions.untangleConj(definitionMentions)
-    (loadableAttributes.actions.keepLongest(other) ++ untangled).toVector
+    // process context attachments to the initially extracted mentions
+    val newEventsWithContexts = actions.makeNewMensWithContexts(modelCorefResolve)
+    val (contextEvents, nonContexts) = newEventsWithContexts.partition(_.label.contains("ContextEvent"))
+    val mensWithContextAttachment = actions.processRuleBasedContextEvent(contextEvents)
+
+    // post-process the mentions with untangleConj and combineFunction
+    val (descriptionMentions, nonDescrMens) = (mensWithContextAttachment ++ nonContexts).partition(_.label.contains("Description"))
+
+    val (functionMentions, nonFunctions) = nonDescrMens.partition(_.label.contains("Function"))
+    val (modelDescrs, nonModelDescrs) = nonFunctions.partition(_.labels.contains("ModelDescr"))
+    val (modelNames, other) = nonModelDescrs.partition(_.label == "Model")
+    val modelFilter = actions.filterModelNames(modelNames)
+    val untangled = actions.untangleConj(descriptionMentions)
+    val combining = actions.combineFunction(functionMentions)
+    val newModelParams2 = actions.functionArgsToModelParam(combining)
+    val finalModelDescrs = modelDescrs.filter(_.arguments.contains("modelName"))
+    val finalModelParam = actions.filterModelParam(newModelParams1 ++ newModelParams2)
+
+    actions.assembleVarsWithParamsAndUnits(actions.replaceWithLongerIdentifier(actions.keepLongest(other ++ combining ++ modelFilter ++ finalModelParam  ++ finalModelDescrs) ++ untangled)).toVector.distinct
+
   }
 
   def extractFromText(text: String, keepText: Boolean = false, filename: Option[String]): Seq[Mention] = {
@@ -96,8 +115,6 @@ class OdinEngine(
     val odinMentions = extractFrom(doc)  // CTM: runs the Odin grammar
     odinMentions  // CTM: collection of mentions ; to be converted to some form (json)
   }
-
-
 
   // Supports web service, when existing entities are already known but from outside the project
   def extractFromDocWithGazetteer(doc: Document, gazetteer: Seq[String]): Seq[Mention] = {
@@ -131,25 +148,34 @@ object OdinEngine {
   lazy val proc: Processor = new FastNLPProcessor()
 
   // Mention labels
-  val DEFINITION_LABEL: String = "Definition"
+  val DESCRIPTION_LABEL: String = "Description"
+  val MODEL_DESCRIPTION_LABEL: String = "ModelDescr"
+  val MODEL_LIMITATION_LABEL: String = "ModelLimitation"
+  val CONJ_DESCRIPTION_LABEL: String = "ConjDescription"
+  val CONJ_DESCRIPTION_TYPE2_LABEL: String = "ConjDescriptionType2"
   val INTERVAL_PARAMETER_SETTING_LABEL: String = "IntervalParameterSetting"
   val PARAMETER_SETTING_LABEL: String = "ParameterSetting"
   val VALUE_LABEL: String = "Value"
-  val VARIABLE_LABEL: String = "Variable"
+  val IDENTIFIER_LABEL: String = "Identifier"
   val VARIABLE_GAZETTEER_LABEL: String = "VariableGazetteer"
   val UNIT_LABEL: String = "UnitRelation"
   val MODEL_LABEL: String = "Model"
   val FUNCTION_LABEL: String = "Function"
+  val CONTEXT_LABEL: String = "Context"
+  val CONTEXT_EVENT_LABEL: String = "ContextEvent"
   // Mention argument types
   val VARIABLE_ARG: String = "variable"
   val VALUE_LEAST_ARG: String = "valueLeast"
   val VALUE_MOST_ARG: String = "valueMost"
-  val DEFINITION_ARG: String = "definition"
+  val DESCRIPTION_ARG: String = "description"
   val VALUE_ARG: String = "value"
   val UNIT_ARG: String = "unit"
   val FUNCTION_INPUT_ARG: String = "input"
   val FUNCTION_OUTPUT_ARG: String = "output"
-
+  val MODEL_NAME_ARG: String = "modelName"
+  val MODEL_DESCRIPTION_ARG: String = "modelDescr"
+  val CONTEXT_ARG: String = "context"
+  val CONTEXT_EVENT_ARG: String = "event"
 
   val logger = LoggerFactory.getLogger(this.getClass())
   // Used by LexiconNER
@@ -164,10 +190,11 @@ object OdinEngine {
 //    // The config with the main settings
 //    val odinConfig: Config = config[Config]("TextEngine")
 
+
     // document filter: used to clean the input ahead of time
     // fixme: should maybe be moved?
     val filterType = odinConfig.get[String]("documentFilter")
-    val enablePreprocessor = odinConfig.get[Boolean](path = "EdgeCaseParagraphPreprocessor").getOrElse(false)
+    val preprocessorType = odinConfig.get[String](path = "preprocessorType").getOrElse("PassThrough")
 
     // Odin Grammars
     val masterRulesPath: String = odinConfig[String]("masterRulesPath")
@@ -194,7 +221,7 @@ object OdinEngine {
     val enableExpansion: Boolean = odinConfig[Boolean]("enableExpansion")
     val freqWords = FileUtils.loadFromOneColumnTSV(odinConfig[String]("freqWordsPath"))
 
-    new OdinEngine(proc, masterRulesPath, taxonomyPath, entityFinders, enableExpansion, validArgs, freqWords, filterType, enablePreprocessor)
+    new OdinEngine(proc, masterRulesPath, taxonomyPath, entityFinders, enableExpansion, validArgs, freqWords, filterType, preprocessorType)
   }
 
 }

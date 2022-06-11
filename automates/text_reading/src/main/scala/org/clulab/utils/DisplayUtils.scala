@@ -1,8 +1,8 @@
 package org.clulab.utils
 
 import java.io.PrintWriter
-
 import org.clulab.aske.automates.attachments.{AutomatesAttachment, DiscontinuousCharOffsetAttachment}
+import org.clulab.aske.automates.mentions.CrossSentenceEventMention
 import org.clulab.odin._
 import org.clulab.processors.{Document, Sentence}
 
@@ -25,6 +25,7 @@ object DisplayUtils {
       sb.append("Tokens: " + (s.words.indices, s.words, s.tags.get).zipped.mkString(", ") + nl)
       if (printDeps) sb.append(syntacticDependenciesToString(s) + nl)
       sb.append(nl)
+
       
       val sortedMentions = mentionsBySentence(i).sortBy(_.label)
       val (events, entities) = sortedMentions.partition(_ matches "Event")
@@ -61,6 +62,13 @@ object DisplayUtils {
         if (em.attachments.nonEmpty) {
           sb.append(s"$tab Event Attachments: ${attachmentsString(em.attachments)} $nl")
         }
+      case cr: CrossSentenceEventMention =>
+        sb.append(s"$tab trigger => ${cr.trigger.text} $nl")
+        if (cr.trigger.attachments.nonEmpty) sb.append(s"$tab  * Attachments: ${attachmentsString(cr.trigger.attachments)} $nl")
+        sb.append(argumentsToString(cr, nl, tab) + nl)
+        if (cr.attachments.nonEmpty) {
+          sb.append(s"$tab CrossSentence Attachments: ${attachmentsString(cr.attachments)} $nl")
+        }
       case rel: RelationMention =>
         sb.append(argumentsToString(rel, nl, tab) + nl)
         if (rel.attachments.nonEmpty) {
@@ -68,6 +76,9 @@ object DisplayUtils {
         }
       case _ => ()
     }
+
+    sb.append(s"semantic head word: ${mention.semHead.getOrElse("")} ${mention.semHeadWord.getOrElse("None")} $nl")
+    sb.append(s"syntactic head word: ${mention.synHead.getOrElse("")} ${mention.synHeadWord.getOrElse("None")} $nl")
     sb.append(s"$boundary $nl")
     sb.toString
   }

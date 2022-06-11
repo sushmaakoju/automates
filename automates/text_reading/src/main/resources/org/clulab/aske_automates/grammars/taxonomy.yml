@@ -1,19 +1,39 @@
 - Entity:
-  - Concept:
-      - Variable:
+  - Phrase:
+      - Identifier:
         - VariableGazetteer
+      - Location
+      - Date:
+        - Year
       - Model
-  - Measurement:
-    - Value:
-      - ValueAndUnit
-    - Unit:
-        - UnitRelation
+      - ModelComponent
+      - Parameter
+      - CommLineParameter
+      - Measurement:
+        - Value
+        - Unit
+      - Filename
+      - Language
+      - Repository
+      - String
+      - Command
+      - VerbPhrase
 - Event:
+  - CommandLineParamValuePair
+  - ContextEvent
   - Conj
   - Causal
-  - Definition:
-    - ConjDefinition
-    - ConjDefinitionType2
+  - DateEvent
+  - Description:
+    - ConjDescription
+    - ConjDescriptionType2
+  - ModelDescr:
+    - ModelLimitation
   - ParameterSetting
+  - ParamAndUnit
   - IntervalParameterSetting
   - Function
+  - Context
+  - CommandSequence
+  - MD_Context
+  - UnitRelation

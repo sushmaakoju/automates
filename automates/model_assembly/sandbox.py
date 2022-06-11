@@ -4,6 +4,10 @@ import re
 
 import numpy as np
 
+# Import math functions that may be used in lambda functions. Import here so
+# they can be used in the eval() call of lambda strings
+from math import cos, exp, sqrt
+
 
 UNSAFE_BUILTINS = re.compile(
     r"""
@@ -38,8 +42,8 @@ def load_lambda_function(func_str: str) -> Callable:
         raise UnsafeOperationError(f"found in lambda:\n{func_str}")
 
     # Checking for expected lambda expression header
-    if re.match(r"lambda [A-Za-z0-9_,]*:", func_str) is None:
-        raise RuntimeError(f"Unexpected form for lambda:\n{func_str}")
+    if  not func_str.startswith("lambda"):
+        raise RuntimeError(f"Lambda expression does not start with 'lambda'\n")
 
     try:
         func_ref = eval(func_str)

@@ -7,18 +7,13 @@ from automates.model_assembly.networks import (
     CausalAnalysisGraph,
 )
 
-from automates.model_assembly.networks import (
-    GroundedFunctionNetwork,
-    CausalAnalysisGraph,
-)
-
 
 def test_igraph_conversion():
     gml_filepath = "tests/data/model_assembly"
     gml_filename = "PETPT__@global__petpt--igraph.gml"
     gml_file_location = os.path.join(gml_filepath, gml_filename)
     G = GroundedFunctionNetwork.from_json(
-        "tests/data/model_assembly/GrFN_examples/PETPT--GrFN.json"
+        "tests/data/model_assembly/GrFN/PETPT--GrFN.json"
     )
     C = CausalAnalysisGraph.from_GrFN(G)
     C.to_igraph_gml(gml_filepath)
@@ -93,7 +88,8 @@ def test_igraph_conversion():
         4.916666666666668,
     ]
 
-    assert g.vs["label"] == expected_node_names
+    node_names_without_uids = [v.rsplit("::", 1)[0] for v in g.vs["label"]]
+    assert node_names_without_uids == expected_node_names
     assert g.vs.degree() == expected_node_degrees
     assert g.es.edge_betweenness() == expected_edge_betweenness
     os.remove(gml_file_location)

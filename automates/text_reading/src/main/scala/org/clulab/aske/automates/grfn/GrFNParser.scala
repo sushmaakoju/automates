@@ -1,8 +1,9 @@
 package org.clulab.aske.automates.grfn
 
 import ai.lum.common.FileUtils._
-import java.io.File
+import org.clulab.aske.automates.apps.ExtractAndAlign.{GLOBAL_VAR_TO_UNIT_VIA_CONCEPT, GLOBAL_VAR_TO_UNIT_VIA_IDENTIFIER}
 
+import java.io.File
 import org.clulab.grounding.{SVOGrounding, sparqlResult}
 import org.clulab.processors.Document
 import org.clulab.processors.fastnlp.FastNLPProcessor
@@ -115,14 +116,14 @@ object GrFNParser {
   }
 
 
-//  def mkTextVarLinkElement(uid: String, source: String, originalSentence: String, identifier: String, definition: String, svo_terms: String, unit: String, paramSetting: ujson.Value, svo: ujson.Value, spans: ujson.Value): ujson.Obj = {
-def mkTextVarLinkElement(uid: String, source: String, originalSentence: String, identifier: String, definition: String, svo_terms: String, svo: ujson.Value, spans: ujson.Value): ujson.Obj = {
+//  def mkTextVarLinkElement(uid: String, source: String, originalSentence: String, identifier: String, description: String, svo_terms: String, unit: String, paramSetting: ujson.Value, svo: ujson.Value, spans: ujson.Value): ujson.Obj = {
+def mkTextVarLinkElement(uid: String, source: String, originalSentence: String, identifier: String, description: String, svo_terms: String, svo: ujson.Value, spans: ujson.Value): ujson.Obj = {
     val linkElement = ujson.Obj(
       "uid" -> uid,
       "source" -> source,
       "original_sentence" -> originalSentence,
       "identifier" -> identifier,
-      "definition" -> definition,
+      "description" -> description,
       "svo_terms" -> svo_terms,
 //      "paramSetting" -> paramSetting,
       "svo_groundings" -> svo,
@@ -133,14 +134,14 @@ def mkTextVarLinkElement(uid: String, source: String, originalSentence: String, 
     linkElement
   }
 
-  def mkTextVarLinkElementForModelComparison(uid: String, source: String, originalSentence: String, identifier: String, definition: String, debug: Boolean): ujson.Obj = {
+  def mkTextVarLinkElementForModelComparison(uid: String, source: String, originalSentence: String, identifier: String, description: String, debug: Boolean): ujson.Obj = {
     val linkElement = if (debug) {
       ujson.Obj(
         "uid" -> uid,
         "source" -> source,
         "original_sentence" -> originalSentence,
         "identifier" -> identifier,
-        "definition" -> definition,
+        "description" -> description,
       )
     } else {
       ujson.Obj(
@@ -163,12 +164,12 @@ def mkTextVarLinkElement(uid: String, source: String, originalSentence: String, 
     linkElement
   }
 
-  def mkModelComparisonTextLinkElement(elemType: String, source: String, identifier: String, definition: String, sentence: String): ujson.Obj = {
+  def mkModelComparisonTextLinkElement(elemType: String, source: String, identifier: String, description: String, sentence: String): ujson.Obj = {
     val linkElement = ujson.Obj(
       "type" -> elemType,
       "source" -> source,
       "identifier" -> identifier,
-      "definition" -> definition,
+      "description" -> description,
       "sentence" -> sentence
     )
     linkElement
@@ -221,6 +222,7 @@ def mkTextVarLinkElement(uid: String, source: String, originalSentence: String, 
     val el2Id = el2json("uid").str
 
     val hypothesis = if (debug) {
+
   //todo: make sure all elements have a content field if possible or make it optional here
       val el1text = el1json("content").str
       val el2text = el2json("content").str
