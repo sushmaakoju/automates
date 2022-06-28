@@ -58,7 +58,7 @@ setup(
         "networkx==2.5",
         "nltk==3.6.6",
         "notebook==6.4.12",
-        "numpy==1.21",
+        "numpy==1.22.0",
         "pandas==1.2.2",
         "plotly==4.5.4",
         "pygraphviz==1.7",
