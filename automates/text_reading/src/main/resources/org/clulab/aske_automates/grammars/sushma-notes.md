@@ -35,3 +35,7 @@ Events that indicate the number of people in an experiment and have two argument
     </ol>
 
 5) Example Rules: 
+    @variable: Population []{,3} [word='=']  (?<value> [tag = "CD"])
+   (@number:Value) (@population:Patient)
+
+6) Rule Explanation:

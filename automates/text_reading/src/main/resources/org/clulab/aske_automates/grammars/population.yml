@@ -3,19 +3,27 @@ vars: org/clulab/aske_automates/grammars/vars.yml
 rules:
 
 ####DESCRIPTIONS####
-  # - name: rule1
-  #   label: PopulationSample
-  #   priority: ${priority}
-  #   type: token
-  #   example: "B is the unstandardized coefficient; rp is the partial standardized effect size for each coefficient. N = 25,718"
-  #   action: ${action}
-  #   pattern: |
-  #     @variable: tag = "CD" @population: Population
-
-  - name: rule2
+  - name: number_type
     label: PopulationSample
     priority: ${priority}
-    type: token # pick the rule type
+    type: token
     example: "Of the total sample, 63.3% identified as female (n = 16,273), 33.6% identified as male (n = 8,636), 1.1% indicated that male and female categories did not fit for them (n = 288), and 2% preferred not to respond"
+    pattern: 
+      (@number:Value) (@population:Patient)
+
+  - name: concept_population
+    label: PopulationSample
+    priority: ${priority}
+    type: token
+    example: "Of the total sample, 63.3% identified as female (n = 16,273), 33.6% identified as male (n = 8,636), 1.1% indicated that male and female categories did not fit for them (n = 288), and 2% preferred not to respond"
+    #action: ${action}
     pattern: |
-      @variable: Phrase [word='=']  [tag = "CD"] @population: Population
+      @variable: Population []{,3} [word='=']  (?<value> [tag = "CD"]) 
+
+  # - name: rule2
+  #   label: PopulationSample
+  #   priority: ${priority}
+  #   type: token # pick the rule type
+  #   example: "Of the total sample, 63.3% identified as female (n = 16,273), 33.6% identified as male (n = 8,636), 1.1% indicated that male and female categories did not fit for them (n = 288), and 2% preferred not to respond"
+  #   pattern: |
+  #     @variable: Phrase [word='=']  [tag = "CD"] @population: Population
